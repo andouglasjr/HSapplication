@@ -1,0 +1,416 @@
+{% extends "base.html" %}
+{% block title_content%} Step 3. Parameters and Processing {% endblock %}
+{% block nav_flex_column  %}
+
+<ul class="nav flex-column">
+  <li class="nav-item">
+    <a class="nav-link disabled" href="#">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        class="feather feather-plus-circle">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="16"></line>
+        <line x1="8" y1="12" x2="16" y2="12"></line>
+      </svg>
+      Welcome <span class="sr-only">(current)</span>
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link disabled" href="#">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        class="feather feather-plus-circle">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="16"></line>
+        <line x1="8" y1="12" x2="16" y2="12"></line>
+      </svg>
+      Hologram Acquisition
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link active" href="#">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        class="feather feather-plus-circle">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="16"></line>
+        <line x1="8" y1="12" x2="16" y2="12"></line>
+      </svg>
+      Parameters and Processing
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link disabled" href="#">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        class="feather feather-plus-circle">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="16"></line>
+        <line x1="8" y1="12" x2="16" y2="12"></line>
+      </svg>
+      Reconstruction
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link disabled" href="#">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        class="feather feather-plus-circle">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="16"></line>
+        <line x1="8" y1="12" x2="16" y2="12"></line>
+      </svg>
+      Segmentation
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link disabled" href="#">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        class="feather feather-plus-circle">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="16"></line>
+        <line x1="8" y1="12" x2="16" y2="12"></line>
+      </svg>
+      Machine Learning
+    </a>
+  </li>
+</ul>
+
+{% endblock %}
+
+{% block buttons_navigation %}
+<a href="{{url_for('test')}}"></a><button type="button" class="btn btn-sm btn-outline-secondary bt-changed">Previous</button></a>
+<a href="#"><button type="button" class="btn btn-sm btn-outline-secondary bt-changed">Next</button></a>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-6">
+    <div class="card p-3 m-2">
+      <h5>Image Log</h5>
+      <div class="row">
+        <div class="container-fluid">
+          <form>
+            <div class="row">
+              <label for="staticEmail" class="col-sm-2 col-form-label bt-changed">Name: </label>
+              <div class="col-sm-10">
+                <input type="text" readonly class="form-control-plaintext bt-changed" id="staticEmail"
+                  value="{{image|safe}}">
+              </div>
+            </div>
+
+            <div class="row">
+              <label for="staticEmail" class="col-sm-2 col-form-label bt-changed">Width: </label>
+              <div class="col-sm-10">
+                <input type="text" readonly class="form-control-plaintext bt-changed" id="width_hologram" value="224px">
+              </div>
+            </div>
+            <div class="row">
+              <label for="staticEmail" class="col-sm-2 col-form-label bt-changed">Height: </label>
+              <div class="col-sm-10">
+                <input type="text" readonly class="form-control-plaintext bt-changed" id="height_hologram"
+                  value="224px">
+              </div>
+            </div>
+
+            <h5>Canvas</h5>
+
+            <div class="form-group row">
+              <label for="staticEmail" class="col-sm-2 col-form-label bt-changed">Width: </label>
+              <div class="col-sm-2">
+                <input type="text" class="form-control bt-changed" id="canvas_width" value="224"> px
+              </div>
+              <label for="staticEmail" class="col-sm-2 col-form-label bt-changed">Height: </label>
+              <div class="col-sm-2">
+                <input type="text" class="form-control bt-changed" id="canvas_height" value="224"> px
+              </div>
+              <a href="#"><button type="button" id="bt_set"
+                  class="btn-sm btn btn-outline-secondary mr-1 bt-changed">Set</button></a> or
+              <a href=" #"><button type="button" id="bt_fit"
+                  class="btn-sm btn btn-outline-secondary ml-1 bt-changed">Fit to Hologram</button></a>
+            </div>
+
+          </form>
+        </div>
+
+        <div id="container_hologram" class="mx-auto mt-2" style="width: fit-content">
+        </div>
+
+      </div>
+
+
+    </div>
+
+  </div>
+  <div class="col-sm">
+
+    <div class="card p-3 m-2">
+
+      <h5> Processing </h5>
+      <div class="form-col text-center " id="processing">
+        <div class="form-group col">
+          <label for="fromControlRange">Bright</label>
+          <input type="range" min="-1" step=0.05 value=0 max="1" class="form-control-range" id="bright">
+        </div>
+        <div class="form-group col">
+          <label for="fromControlRange">Contrast</label>
+          <input type="range" min="-100" step=1 value=0 max="100" class="form-control-range" id="contrast">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" id="gridCheck_processing"
+            onclick="disable_div('#gridCheck_processing', '#processing')">
+          <label class="form-check-label bt-changed" for="gridCheck">
+            Confirm the processing
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="card p-3 m-2">
+      <h5> Save Changes </h5>
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text bt-changed" id="basic-addon1">Image name:</span>
+        </div>
+        <input id="image_name" type="text" class="form-control bt-changed" placeholder="" aria-label="hologram_1"
+          aria-describedby="basic-addon1" value="hologram_processed_1.png">
+      </div>
+
+      <a href="#" class="confirm_hologram bt-changed"><button type="button" id="bt_confirm"
+          class="btn btn-sm btn-outline-secondary bt-changed">Save and Reconstruct</button></a>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block new_scripts%}
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="https://unpkg.com/konva@7.1.3/konva.min.js"></script>
+<script type=text/javascript>
+
+  function disable_div(checkbox_id, div_id){
+    var isChecked = $(checkbox_id+':checked').length > 0;
+    $(div_id + ' *').attr("disabled", isChecked).off('click')
+  
+  }
+  
+  function loadImages(sources, callback) {
+    var images = {};
+    var loadedImages = 0;
+    var numImages = 0;
+    for (var src in sources) {
+      numImages++;
+    }
+    for (var src in sources) {
+      images[src] = new Image();
+      images[src].onload = function () {
+        if (++loadedImages >= numImages) {
+          callback(images);
+        }
+      }
+      images[src].src = sources[src];
+    }
+  }
+  
+  function buildStage(images) {
+    var hologram = new Konva.Image({
+        image: images.hologram,
+        x: 0,
+        y: 0,
+        draggable: true,
+      });
+
+    var width = 300;
+    var height = 300;
+
+      var stage = new Konva.Stage({
+        container: 'container_hologram',
+        width: width,
+        height: height,
+      });
+
+      var layer = new Konva.Layer();
+      stage.add(layer)
+
+      //var background = new Konva.Layer();
+      //stage.add(background)
+
+      stage.container().style.backgroundColor = 'black';
+            // another solution is to use rectangle shape
+      var background = new Konva.Rect({
+        x: 0,
+        y: 0,
+        width: stage.width(),
+        height: stage.height(),
+        fill: 'black',
+        listening: false,
+      });
+      layer.add(background);
+      // the stage is draggable
+      // that means absolute position of background may change
+      // so we need to reset it back to {0, 0}
+
+      stage.on('dragmove', () => {
+        background.absolutePosition({ x: 0, y: 0 });
+        // you may need to add extra calculations here if you are changing scale, rotation of and parent of the background
+        layer.batchDraw();
+      });
+
+      var layer = new Konva.Layer();
+
+      hologram.cache();
+      hologram.filters([Konva.Filters.Brighten, Konva.Filters.Contrast]);
+      layer.add(hologram);
+      stage.add(layer);
+
+      var slider_bright = document.getElementById('bright');
+      slider_bright.oninput = function () {
+        hologram.brightness(slider_bright.value);
+        layer.batchDraw();
+      };
+
+      
+      var sliders = ['contrast'];
+      sliders.forEach(function (attr) {
+        var slider = document.getElementById(attr);
+        function update() {
+          hologram[attr](parseFloat(slider.value));
+          layer.batchDraw();
+        }
+        slider.oninput = update;
+        update();
+      });
+
+      var tr1 = new Konva.Transformer({
+      nodes: [hologram],
+      keepRatio: true,
+      enabledAnchors: [
+          'top-left',
+          'top-right',
+          'bottom-left',
+          'bottom-right',
+          ],
+      });
+      //layer.add(tr1);
+
+      hologram.on('transformstart', function () {
+        console.log('transform start');
+      });
+
+      hologram.on('transform', function () {
+        updateParamenters();
+        console.log('transform');
+      });
+
+      hologram.on('transformend', function () {
+        console.log('transform end');
+      })
+
+      function updateParamenters() {
+          var width_ = hologram.width();
+          var height_ = hologram.height();
+          
+          document.getElementById('width_hologram').value = width_;
+          document.getElementById('height_hologram').value = height_;
+
+          
+      }
+
+    document.getElementById('bt_fit').addEventListener(
+      'click',
+      function () {
+        
+        
+        stage.width(hologram.width());
+        stage.height(hologram.height());
+
+        background.width(hologram.width());
+        background.height(hologram.height());
+
+        
+        stage.draw();
+      },
+      false
+    );
+
+    document.getElementById('bt_set').addEventListener(
+      'click',
+      function () {
+
+        width_ = document.getElementById('canvas_width').value;
+        height_ = document.getElementById('canvas_height').value;
+
+        stage.width(width_);
+        stage.height(height_);
+
+        background.width(width_);
+        background.height(height_);
+
+        stage.draw();
+      },
+      false
+    );
+
+      function downloadURI(uri, name) {
+          req = $.ajax({
+              url : '/save_changes',
+              type: 'POST',
+              data: {'image_uri':uri, 'filename': name},
+          });
+
+          req.done(function (data) {
+              console.log(data)
+                  if (data.result == 'sucess'){
+                      window.location.href = "{{ url_for('holo_reconstruction', image='') }}"+data.path;
+                  } 
+              });
+      }
+
+      document.getElementById('bt_confirm').addEventListener(
+      'click',
+      function () {
+          var filename = document.getElementById('image_name').value
+          var dataURL = stage.toDataURL({
+            mimeType: 'image/jpg',
+            quality: 1.0
+          });
+          downloadURI(dataURL, filename);
+      },
+      false
+    );
+    }
+
+    var sources = {
+      hologram: '{{ image|safe }}'
+    };
+
+    loadImages(sources, buildStage);
+
+
+    $('.save_changes').on('click', function () {
+        var activate = true;
+        req = $.ajax({
+          url : '/save_changes',
+          type: 'POST',
+          data : {activate:activate}
+        });
+
+        req.done(function (data) {
+            if (data.result == 'sucess'){
+                $('#bt_record').text("Acquire Again")
+                document.getElementById("bt_record").style.visibility = "hidden"
+                document.getElementById("bt_confirm").style.visibility = "visible"
+            } 
+        });
+            
+    });
+
+         
+         
+</script>
+
+{% endblock %}

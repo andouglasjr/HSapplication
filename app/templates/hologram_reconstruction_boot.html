@@ -1,0 +1,661 @@
+{% extends "base.html" %}
+{% block title_content%} Step 4. Reconstruction {% endblock %}
+{% block nav_flex_column  %}
+
+<ul class="nav flex-column">
+  <li class="nav-item">
+    <a class="nav-link disabled" href="#">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        class="feather feather-plus-circle">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="16"></line>
+        <line x1="8" y1="12" x2="16" y2="12"></line>
+      </svg>
+      Welcome <span class="sr-only">(current)</span>
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link disabled" href="#">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        class="feather feather-plus-circle">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="16"></line>
+        <line x1="8" y1="12" x2="16" y2="12"></line>
+      </svg>
+      Hologram Acquisition
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link disabled" href="#">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        class="feather feather-plus-circle">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="16"></line>
+        <line x1="8" y1="12" x2="16" y2="12"></line>
+      </svg>
+      Processing
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link active" href="#">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        class="feather feather-plus-circle">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="16"></line>
+        <line x1="8" y1="12" x2="16" y2="12"></line>
+      </svg>
+      Reconstruction
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link disabled" href="#">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        class="feather feather-plus-circle">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="16"></line>
+        <line x1="8" y1="12" x2="16" y2="12"></line>
+      </svg>
+      Segmentation
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link disabled" href="#">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        class="feather feather-plus-circle">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="16"></line>
+        <line x1="8" y1="12" x2="16" y2="12"></line>
+      </svg>
+      Machine Learning
+    </a>
+  </li>
+</ul>
+
+{% endblock %}
+
+{% block buttons_navigation %}
+<a href="{{url_for('hologram_acquisition')}}"><button type="button"
+    class="btn btn-sm btn-outline-secondary bt-changed">Previous</button></a>
+<a href="{{url_for('holo_classification')}}"><button type="button"
+    class="btn btn-sm btn-outline-secondary bt-changed">Skip Segmentation</button></a>
+<a href="#"><button onclick="next_page()" type="button"
+    class="btn btn-sm btn-outline-secondary bt-changed">Next</button></a>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="card bg-light mb-3">
+    <div class="card-header card-header-changed"></div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-2">
+          <div class="row">
+            <h5 class="card-title card-header-changed"></h5>
+            <div class="input-group input-group-sm mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-sm" style="font-size: small;">Pitch</span>
+              </div>
+              <input type="text input-changed" id="pitch_form" value="8e-06" class="form-control" aria-label="Small"
+                aria-describedby="inputGroup-sizing-sm">
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-group input-group-sm mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-sm" style="font-size: small;">Lenght</span>
+              </div>
+              <input type="text" value="6.33e-07" id="lenght_form" class="form-control" aria-label="Small"
+                aria-describedby="inputGroup-sizing-sm">
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-group input-group-sm mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-sm" style="font-size: small;">Z-start</span>
+              </div>
+              <input type="text" value="0" id="zstart_form" class="form-control" aria-label="Small"
+                aria-describedby="inputGroup-sizing-sm">
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-group input-group-sm mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-sm" style="font-size: small;">Z-end</span>
+              </div>
+              <input type="text" value="1.5" id="zend_form" class="form-control" aria-label="Small"
+                aria-describedby="inputGroup-sizing-sm">
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-group input-group-sm mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-sm" style="font-size: small;">Step</span>
+              </div>
+              <input type="text" class="form-control" id="step_form" value="0.1" aria-label="Small"
+                aria-describedby="inputGroup-sizing-sm">
+            </div>
+          </div>
+          <div class="row ml-2 mb-2">
+            <input type="checkbox" class="form-check-input" id="check_spatial_filtering">
+            <label class="form-check-label">Spatial Filtering</label>
+          </div>
+          <div class="row">
+            <div class="col-sm"></div>
+            <div class="col-sm"></div>
+            <div class="col-sm"><a href="#"></a><button id="reconstruct_bt" type="button"
+                class="btn btn-sm btn-outline-secondary bt-changed float-right">Reconstruct</button></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-10">
+          <div class="row">
+            <div class="col-sm">
+              <h5 class="card-title card-header-changed">Hologram</h5>
+              <img class="img-thumbnail img-show" src="{{url_for('static', filename='')}}{{image}}">
+            </div>
+            <div class="col-sm">
+              <h5 class="card-title card-header-changed">Reconstruction</h5>
+              <img class="img-thumbnail img-show" id="image_view_amp_reconstruct">
+
+            </div>
+            <div class="col-sm">
+              <h5 class="card-title card-header-changed">Phase</h5>
+              <img class="img-thumbnail img-show" id="image_view_phase_reconstruct">
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<div class="row text-right">
+  <div class="col-sm"><a href="#"></a><button id="generate_microscope" type="button"
+      class="btn btn-sm btn-outline-secondary bt-changed">
+      <img src="{{url_for('static',filename='logos/microscope.png')}}" width="60px" height="60px">
+      Create 3D Microscope</button></a>
+  </div>
+
+</div>
+<div id="modal" class="modal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <p>Reconstructing...</p>
+        <div class="progress">
+          <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75"
+            aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div id="modal_spatial_filter" class="modal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="col">
+          <div class="card p-3 m-2">
+
+
+            <h5>Canvas</h5>
+
+            <div class="form-group row">
+              <label for="staticEmail" class="col-sm-2 col-form-label bt-changed">Width: </label>
+              <div class="col-sm-2">
+                <input type="text" class="form-control bt-changed" id="canvas_width" value="224"> px
+              </div>
+              <label for="staticEmail" class="col-sm-2 col-form-label bt-changed">Height: </label>
+              <div class="col-sm-2">
+                <input type="text" class="form-control bt-changed" id="canvas_height" value="224"> px
+              </div>
+              <a href="#"><button type="button" id="bt_set"
+                  class="btn-sm btn btn-outline-secondary mr-1 bt-changed">Set</button></a> or
+              <a href=" #"><button type="button" id="bt_fit"
+                  class="btn-sm btn btn-outline-secondary ml-1 bt-changed">Fit to Hologram</button></a>
+            </div>
+
+            </form>
+          </div>
+
+          <div id="container_hologram" class="mx-auto mt-2" style="width: fit-content">
+          </div>
+
+        </div>
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="bt_confirm">Reconstruct</button>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<div id="modal_3d_microscope" class="modal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="col">
+          <div class="card p-3 m-2">
+            <h5>3D Microscope Generator</h5>
+            <div class="row">
+              <div class="col-sm">
+                <img src="{{url_for('static',filename='logos/microscope_dimensions.png')}}" width="350px">
+              </div>
+              <div class="col-sm">
+                <div class="card p-3 m-2">
+                  <h5>Distances</h5>
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="input-group input-group-sm mb-3">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text" id="inputGroup-sizing-sm-1"
+                            style="font-size: small;">Grating-Lens</span>
+                        </div>
+                        <input type="text" value="20" id="dgl_form" class="form-control" aria-label="Small"
+                          aria-describedby="inputGroup-sizing-sm">
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="input-group input-group-sm mb-3">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text" id="inputGroup-sizing-sm-1"
+                            style="font-size: small;">Lens-Camera</span>
+                        </div>
+                        <input type="text" value="60" id="dlc_form" class="form-control" aria-label="Small"
+                          aria-describedby="inputGroup-sizing-sm">
+                      </div>
+                    </div>
+                    <div class="row">
+                      <span id="msg_saving"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="generate_stl">Generate STL File</button>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+</div>
+</div>
+
+{% endblock %}
+
+{% block new_scripts%}
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="https://unpkg.com/konva@7.1.3/konva.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"
+  integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
+<script type="text/javascript" charset="utf-8">
+
+  function loadImages(sources, callback) {
+    var images = {};
+    var loadedImages = 0;
+    var numImages = 0;
+    for (var src in sources) {
+      numImages++;
+    }
+    for (var src in sources) {
+      images[src] = new Image();
+      images[src].onload = function () {
+        if (++loadedImages >= numImages) {
+          callback(images);
+        }
+      }
+      images[src].src = sources[src];
+    }
+  }
+
+  function buildStage(images) {
+
+    var width = 400;
+    var height = 400;
+
+    var stage = new Konva.Stage({
+      container: 'container_hologram',
+      width: width,
+      height: height,
+    });
+
+    stage.container().style.backgroundColor = 'black';
+
+    var background = new Konva.Rect({
+      x: 0,
+      y: 0,
+      width: stage.width(),
+      height: stage.height(),
+      fill: 'black',
+      listening: false,
+    });
+
+    var layer = new Konva.Layer();
+    layer.add(background);
+
+    var hologram = new Konva.Image({
+      image: images.hologram,
+      x: 0,
+      y: 0,
+    });
+
+    image_width = hologram.attrs.image.width
+    image_height = hologram.attrs.image.height
+
+    rate_width = width / image_width;
+    rate_height = width / image_height;
+
+    console.log(image_width, image_height)
+    console.log(rate_width, rate_height)
+
+    var scale_x = 0
+    var scale_y = 0
+
+    if (rate_width < 1) {
+      scale_x = rate_width
+    } else {
+      stage.width(hologram.width());
+    }
+
+    if (rate_height < 1) {
+      scale_y = rate_height
+    } else {
+      stage.height(hologram.height());
+    }
+
+    hologram.setAttrs({
+      x: 0,
+      y: 0,
+      borderSize: 1,
+      scaleX: scale_x,
+      scaleY: scale_y,
+    });
+
+    hologram.zIndex(0);
+
+    hologram.cache();
+    layer.add(hologram);
+
+    var rect1 = new Konva.Rect({
+      x: 20,
+      y: 20,
+      width: 200,
+      height: 200,
+      stroke: 'black',
+      strokeWidth: 1,
+      draggable: true,
+    });
+
+    rect1.on('dragmove', function () {
+
+    });
+
+    var tr1 = new Konva.Transformer({
+      nodes: [rect1],
+      centeredScaling: false,
+    });
+
+    layer.add(tr1);
+    layer.add(rect1)
+    stage.add(layer);
+
+    hologram.on('transformstart', function () {
+      console.log('transform start');
+    });
+
+    hologram.on('transform', function () {
+      updateParamenters();
+      console.log('transform');
+    });
+
+    hologram.on('transformend', function () {
+      console.log('transform end');
+    })
+
+    function updateParamenters() {
+      var width_ = hologram.width();
+      var height_ = hologram.height();
+
+      document.getElementById('width_hologram').value = width_;
+      document.getElementById('height_hologram').value = height_;
+
+
+    }
+
+    document.getElementById('bt_fit').addEventListener(
+      'click',
+      function () {
+        stage.width(hologram.width());
+        stage.height(hologram.height());
+
+        background.width(hologram.width());
+        background.height(hologram.height());
+
+        stage.draw();
+      },
+      false
+    );
+
+    document.getElementById('bt_set').addEventListener(
+      'click',
+      function () {
+
+        width_ = document.getElementById('canvas_width').value;
+        height_ = document.getElementById('canvas_height').value;
+
+        stage.width(width_);
+        stage.height(height_);
+
+        background.width(width_);
+        background.height(height_);
+
+        stage.draw();
+      },
+      false
+    );
+
+    function downloadURI(uri, name) {
+      req = $.ajax({
+        url: '/reconstruct_from_fft',
+        type: 'POST',
+        beforeSend: function () {
+          $('#modal_spatial_filter').modal('hide')
+          $('#modal').modal('show')
+        },
+        data: { 'image_uri': uri, 'filename': name },
+      });
+
+      req.done(function (data) {
+        console.log(data.phase_img);
+        $('#modal').modal('hide');
+        $('#image_view_phase_reconstruct').attr('src', data.phase_img)
+        $('#image_view_amp_reconstruct').attr('src', data.amp_img)
+
+      });
+    }
+
+    document.getElementById('bt_confirm').addEventListener(
+      'click',
+      function () {
+        //var filename = 'fft_modified.jpeg'
+        //var dataURL = stage.toDataURL({
+        //  mimeType: 'image/jpg',
+        //  quality: 1.0
+        //});
+        //downloadURI(dataURL, filename);
+
+        var rect_pos_x = rect1.attrs.x;
+        var rect_pos_y = rect1.attrs.y;
+        var rect_width = rect1.attrs.width * rect1.attrs.scaleX;
+        var rect_height = rect1.attrs.height * rect1.attrs.scaleY;
+        var image_scaleX = hologram.attrs.scaleX;
+        var image_scaleY = hologram.attrs.scaleY;
+
+        console.log(image_scaleX, image_scaleY)
+
+        req = $.ajax({
+          url: '/reconstruct_from_fft',
+          type: 'POST',
+          beforeSend: function () {
+            $('#modal_spatial_filter').modal('hide')
+            $('#modal').modal('show')
+          },
+          data: {
+            'mask_pos_x': rect_pos_x,
+            'mask_pos_y': rect_pos_y,
+            'mask_width': rect_width,
+            'mask_height': rect_height,
+            'image_scaleX': image_scaleX,
+            'image_scaleY': image_scaleY,
+          },
+          dataType: "json",
+
+        });
+
+        req.done(function (data) {
+          console.log(data)
+          $('#modal').modal('hide')
+          $('#image_view_phase_reconstruct').attr('src', data.phase_img)
+          $('#image_view_amp_reconstruct').attr('src', data.amp_img)
+
+        });
+      },
+      false
+    );
+  }
+
+  $(document).ready(function () {
+    $('#generate_microscope').click(function (event) {
+      $('#modal_3d_microscope').modal('show')
+    });
+
+    $('#generate_stl').click(function (event) {
+      console.log('Entrou')
+      var dgl = document.getElementById('dgl_form').value;
+      var dlc = document.getElementById('dlc_form').value;
+      var msg = document.getElementById('msg_saving')
+
+
+      req = $.ajax({
+        url: '/generate_stl',
+        type: 'POST',
+        beforeSend: function () {
+          msg.innerHTML = "Generating stl file, please wait..."
+        },
+        data: {
+          'dgl': dgl,
+          'dlc': dlc,
+        },
+        dataType: "json",
+      });
+
+      req.done(function (data) {
+        //$('#modal_3d_microscope').modal('hide')
+        msg.innerHTML = "File: " + data.out_file_name + ";<br>";
+        msg.innerHTML += "Folder: 'static/stl_files'";
+      });
+
+    });
+
+    $('#reconstruct_bt').click(function (event) {
+      var pitch = document.getElementById("pitch_form").value;
+      var lenght = document.getElementById("lenght_form").value;
+      var zstart = document.getElementById("zstart_form").value;
+      var zend = document.getElementById("zend_form").value;
+      var step = document.getElementById("step_form").value;
+      var spatial_filtering = document.getElementById("check_spatial_filtering").checked;
+      console.log(spatial_filtering)
+
+      if (spatial_filtering) {
+        req = $.ajax({
+          url: '/spatial_filter',
+          cache: false,
+          async: true,
+          type: 'POST',
+
+          data: {
+            pitch: pitch,
+            lenght: lenght,
+            zstart: zstart,
+            zend: zend,
+            step: step
+          },
+          dataType: "json",
+        });
+
+        req.done(function (data) {
+          var sources = {
+            hologram: '/static/saved_holograms/' + data.fft,
+          };
+          console.log(sources)
+
+          $('#modal_spatial_filter').modal('show');
+          loadImages(sources, buildStage);
+
+
+        });
+
+
+      } else {
+        req = $.ajax({
+          url: '/reconstruct',
+          cache: false,
+          async: true,
+          type: 'POST',
+          beforeSend: function () {
+            $('#modal').modal('show')
+          },
+          data: {
+            pitch: pitch,
+            lenght: lenght,
+            zstart: zstart,
+            zend: zend,
+            step: step
+          },
+          dataType: "json",
+        });
+
+        req.done(function (data) {
+          $('#modal').modal('hide')
+          var i;
+          $('#image_view_phase_reconstruct').attr('src', data.phase_img)
+          $('#image_view_amp_reconstruct').attr('src', data.amp_img)
+
+        });
+
+      }
+
+
+    });
+
+  });
+
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,369 @@
+{% extends "base.html" %}
+{% block title_content%} Step 2. Hologram Acquisition {% endblock %}
+{% block nav_flex_column  %}
+
+<ul class="nav flex-column">
+  <li class="nav-item">
+    <a class="nav-link disabled" href="#">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        class="feather feather-plus-circle">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="16"></line>
+        <line x1="8" y1="12" x2="16" y2="12"></line>
+      </svg>
+      Welcome <span class="sr-only">(current)</span>
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link active" href="#">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        class="feather feather-plus-circle">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="16"></line>
+        <line x1="8" y1="12" x2="16" y2="12"></line>
+      </svg>
+      Hologram Acquisition
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link disabled" href="#">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        class="feather feather-plus-circle">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="16"></line>
+        <line x1="8" y1="12" x2="16" y2="12"></line>
+      </svg>
+      Processing
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link disabled" href="#">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        class="feather feather-plus-circle">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="16"></line>
+        <line x1="8" y1="12" x2="16" y2="12"></line>
+      </svg>
+      Reconstruction
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link disabled" href="#">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        class="feather feather-plus-circle">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="16"></line>
+        <line x1="8" y1="12" x2="16" y2="12"></line>
+      </svg>
+      Segmentation
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link disabled" href="#">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        class="feather feather-plus-circle">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="16"></line>
+        <line x1="8" y1="12" x2="16" y2="12"></line>
+      </svg>
+      Machine Learning
+    </a>
+  </li>
+</ul>
+
+{% endblock %}
+
+{% block buttons_navigation %}
+<a href="#"><button type="button" class="btn btn-sm btn-outline-secondary bt-changed">Previous</button></a>
+<a href="#"><button onclick="skip_next_page()" type="button"
+    class="btn btn-sm btn-outline-secondary bt-changed">Skip</button></a>
+<a href="#"><button onclick="next_page()" type="button"
+    class="btn btn-sm btn-outline-secondary bt-changed">Next</button></a>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-sm">
+    <div class="card">
+      <div class="card-body">
+        <div class="input-group mb-3">
+          <p class="card-header-changed">
+            Give a name to the experiment. Then, acquire the hologram image or choose a local file to upload. You can
+            use images or mat files.
+          </p>
+          <div class="input-group-prepend">
+            <span class="input-group-text card-header-changed" id="basic-addon1">Experiment Name:</span>
+          </div>
+          <input id="experiment_name" type="text" class="form-control card-header-changed " placeholder=""
+            aria-label="hologram_1" aria-describedby="basic-addon1" value="Experiment1">
+        </div>
+      </div>
+      <div class="content text-center">
+        <img src="{{ url_for('video_feed') }}" style="max-width: 450px;" class="img-thumbnail">
+      </div>
+      <div class="card-body">
+        <!--h5 class="card-title">Card title</h5-->
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text card-header-changed" id="basic-addon1">Image name:</span>
+          </div>
+          <input id="image_name" type="text" class="form-control card-header-changed " placeholder=""
+            aria-label="hologram_1" aria-describedby="basic-addon1" value="hologram_1.jpg">
+        </div>
+        <a href="#" class="record_hologram"><button onclick="record_hologram()" type="button" id="bt_record"
+            class="btn btn-sm btn-outline-secondary card-header-changed ">Record Hologram</button></a>
+        <a href="#" class="confirm_hologram"><button onclick="next_page()" type="button" id="bt_confirm"
+            class="btn btn-sm btn-outline-secondary" style="visibility: hidden;">Next Step</button></a>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm">
+    <div class="card" style="margin-bottom: 10px;">
+      <div class="card-header card-header-changed ">
+        Saved Images
+      </div>
+      <p class="h6 ml-4 mt-4 card-header-changed ">Please, select the picture or upload it.</p>
+      <form method="post" enctype="multipart/form-data" id="fileForm">
+        <div class="form-group ml-4 mr-4 text-right">
+          <input type="file" class="form-control-file" id="image_uploaded" name="image1">
+          <button type="button" id="upload_image" class="btn btn-outline-secondary m-1 bt-changed">Upload</button>
+
+        </div>
+      </form>
+    </div>
+    <div class="card">
+      <div class="card-header card-header-changed ">
+        Directory: /saved/holograms
+      </div>
+
+      <div class="card-body row" id="image_card" style="height: 20em; overflow-y: scroll;">
+        <fieldset class="radio-image">
+          {% for image in card_images%}
+          <label for="{{image}}">
+            <input type="radio" name="saved_image" value="checkbox_{{image}}" id="{{image}}"
+              onclick="selected_image(this)">
+            {% if '.mat' in image %}
+            <img src="static/logos/mat_file.png" class="img-thumbnail" style="width: 130px; height: 110px;"
+              alt="{{image|safe}}">
+            <p style="font-size: small; text-align: center;">{{image|safe}}</p>
+            {% else %}
+            <img src="static/saved_holograms/{{image|safe}}" class="img-thumbnail" style="width: 130px; height:110px;">
+            <p style="font-size: small; text-align: center;">{{image|safe}}</p>
+            {% endif %}
+          </label>
+          {% endfor %}
+        </fieldset>
+
+
+      </div>
+
+
+    </div>
+  </div>
+</div>
+<div id="modal" class="modal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">File Setup</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>It was chosen a mat file. To work properly is necessary to identify at least the attribute
+          where the image is recorded.</p>
+        <p>p.s.: In this case, the Processing step is skipped. Other parameters will be requested in reconstruction
+          step.</p>
+        <form>
+          <div class="form-group row">
+            <label for="staticEmail" class="col-sm-4 col-form-label">File Name:</label>
+            <div class="col-sm-6">
+              <input type="text" readonly class="form-control-plaintext" id="staticEmail" value=".mat">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="inputPassword" class="col-sm-4 col-form-label">Hologram Data Attribute: </label>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" id="holo-attrs">
+            </div>
+          </div>
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="next_page_modal(this)">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+{% endblock %}
+
+{% block new_scripts%}
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>
+  var filename = ""
+
+  function next_page_modal(button) {
+    var holo_attrs = document.getElementById('holo-attrs').value
+    console.log(holo_attrs)
+    var experiment_name = document.getElementById("experiment_name").value
+    req = $.ajax({
+      url: '/stop_thread',
+      type: 'POST',
+      data: { exp_name: experiment_name, holo_attrs: holo_attrs, filename: filename },
+    });
+
+    req.done(function (data) {
+      window.location.href = "{{ url_for('holo_reconstruction', image='') }}" + data.image_path;
+    });
+  }
+
+  function next_page(button) {
+    if (filename.includes('mat')) {
+      $('#modal').modal('show')
+    } else {
+      var experiment_name = document.getElementById("experiment_name").value
+
+      req = $.ajax({
+        url: '/stop_thread',
+        type: 'POST',
+        data: { exp_name: experiment_name, filename: filename },
+      });
+
+      req.done(function (data) {
+        window.location.href = "{{ url_for('processing_hologram', image='') }}" + data.image_path;
+      });
+
+    }
+
+  }
+
+  function skip_next_page(button) {
+    if (filename.includes('mat')) {
+      $('#modal').modal('show')
+    } else {
+      var experiment_name = document.getElementById("experiment_name").value
+
+      req = $.ajax({
+        url: '/stop_thread',
+        type: 'POST',
+        data: { exp_name: experiment_name, filename: filename },
+      });
+
+      req.done(function (data) {
+        console.log(data);
+        window.location.href = "{{ url_for('holo_reconstruction', image='') }}" + data.image_path;
+      });
+
+    }
+
+  }
+
+  function disable_div(checkbox_id, div_id) {
+    var isChecked = $(checkbox_id + ':checked').length > 0;
+    $(div_id + ' *').attr("disabled", isChecked).off('click')
+
+  }
+
+  function selected_image(checkbox) {
+    var checkbox_value = checkbox.value
+    //disable_div('#checkbox', '#image_card')
+    //checkbox.disabled = false
+
+    filename = checkbox_value.replace('checkbox_', '')
+    console.log(filename)
+  }
+
+  function record_hologram(button) {
+    var image_name = document.getElementById("image_name").value
+    var image_card = document.getElementById("image_card")
+    var activate = true;
+    req = $.ajax({
+      url: '/record_hologram',
+      type: 'POST',
+      data: { image_name: image_name }
+    });
+
+    req.done(function (data) {
+      console.log(data)
+      if (data.rec_hologram) {
+        $('#bt_record').text("Acquire Again")
+        document.getElementById("bt_confirm").style.visibility = "visible"
+        var i;
+        console.log(data)
+        image_card.innerHTML = "";
+        for (i = 0; i < data.images_folder.length; i++) {
+          var name = data.images_folder[i];
+          image_card.innerHTML += '<button type="button" class="btn btn-outline-secondary m-1" data-toggle="button" aria-pressed="false" >' +
+            '<img src="static/saved_holograms/' + name + '" class="img-thumbnail" style="width: 130px; height:110px;" /></button>'
+        }
+
+
+      } else {
+        $('#bt_record').text("Record Hologram")
+        document.getElementById("bt_confirm").style.visibility = "hidden"
+        var i;
+        console.log(data)
+        image_card.innerHTML = "";
+        for (i = 0; i < data.images_folder.length; i++) {
+          var name = data.images_folder[i];
+          image_card.innerHTML += '<button type="button" class="btn btn-outline-secondary m-1" data-toggle="button" aria-pressed="false" >' +
+            '<img src="static/saved_holograms/' + name + '" class="img-thumbnail" style="width: 130px; height:110px;" /></button>'
+        }
+      };
+
+    });
+
+  }
+
+  $(document).ready(function () {
+
+    $('#upload_image').click(function (event) {
+      var formDataRaw = $('#fileForm')[0];
+      var image = new FormData(formDataRaw);
+      var image_card = document.getElementById("image_card")
+
+      req = $.ajax({
+        url: '/upload',
+        type: 'POST',
+        data: image,
+        processData: false,
+        contentType: false,
+      });
+
+      req.done(function (data) {
+        var i;
+        console.log(data)
+        image_card.innerHTML = "";
+        for (i = 0; i < data.images_folder.length; i++) {
+          var name = data.images_folder[i];
+          image_card.innerHTML += '<button type="button" class="btn btn-outline-secondary m-1" data-toggle="button" aria-pressed="false" >' +
+            '<img src="static/saved_holograms/' + name + '" class="img-thumbnail" style="width: 130px; height:110px;" /></button>'
+        }
+      });
+    });
+
+
+    dir_path = os.path.dirname(os.path.dirname(__file__))
+    path_directory = dir_path + '/static/saved_holograms/'
+    console.log('entrou')
+
+    $('#bt_record').on('click', function () {
+
+
+
+    });
+
+  });
+</script>
+
+{% endblock %}

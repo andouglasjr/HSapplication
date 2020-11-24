@@ -1,0 +1,50 @@
+#title-id{
+    font-size: medium;
+    
+  }
+
+ .nav-item{
+      font-size: x-small;
+  }
+
+  .container-mid{
+      min-width: 100em;;
+      max-height: 400px;
+  }
+
+  h5 {
+      font-size: medium;
+  }
+
+  .img-show{
+      width: 250px;
+      height: 250px;
+  }
+
+  .bt-changed{ 
+      font-size: x-small;
+  }
+
+  .input-changed{
+    font-size: x-small;
+  }
+
+  .card-header-changed{
+      font-size: small;
+  }
+
+  #inputGroup-sizing-sm{
+      width: 4em;
+  }
+
+.radio-image label > input{
+    visibility: hidden;
+}
+.radio-image label > input + img{
+    cursor:pointer;
+    border:2px solid #EEE;
+    padding:1px;
+}
+.radio-image label > input:checked + img{
+    border:3px solid darkgray;
+}

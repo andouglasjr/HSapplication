@@ -1,0 +1,421 @@
+{% extends "base.html" %}
+{% block title_content%} Step 6. Classification {% endblock %}
+{% block nav_flex_column  %}
+
+<ul class="nav flex-column">
+  <li class="nav-item">
+    <a class="nav-link disabled" href="#">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        class="feather feather-plus-circle">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="16"></line>
+        <line x1="8" y1="12" x2="16" y2="12"></line>
+      </svg>
+      Welcome <span class="sr-only">(current)</span>
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link disabled" href="#">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        class="feather feather-plus-circle">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="16"></line>
+        <line x1="8" y1="12" x2="16" y2="12"></line>
+      </svg>
+      Hologram Acquisition
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link disabled" href="#">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        class="feather feather-plus-circle">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="16"></line>
+        <line x1="8" y1="12" x2="16" y2="12"></line>
+      </svg>
+      Processing
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link disabled" href="#">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        class="feather feather-plus-circle">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="16"></line>
+        <line x1="8" y1="12" x2="16" y2="12"></line>
+      </svg>
+      Reconstruction
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link disabled" href="#">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        class="feather feather-plus-circle">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="16"></line>
+        <line x1="8" y1="12" x2="16" y2="12"></line>
+      </svg>
+      Segmentation
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link active" href="#">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        class="feather feather-plus-circle">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="16"></line>
+        <line x1="8" y1="12" x2="16" y2="12"></line>
+      </svg>
+      Machine Learning
+    </a>
+  </li>
+</ul>
+
+{% endblock %}
+
+{% block buttons_navigation %}
+<a href="{{url_for('test')}}"></a><button type="button"
+  class="btn btn-sm btn-outline-secondary bt-changed">Previous</button></a>
+<a href="#"></a><button onclick="next_page()" type="button"
+  class="btn btn-sm btn-outline-secondary bt-changed">Next</button></a>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-5">
+    <div class="card">
+      <div class="card-header card-header-changed"> Available Models </div>
+      <div class="card-body">
+        <p class="card-text">Choose the model to classify: </p>
+        <table class="table table-inverse">
+          <thead class="thead-inverse">
+            <tr>
+              <th>Model Name</th>
+              <th>Test Accuracy</th>
+              <th>Select</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for model in models%}
+            <tr>
+              <td scope="row">{{model|safe}}</td>
+              <td></td>
+              <td>
+                <input type="checkbox" name="{{model|safe}}" id="checkbox" value="checkbox_{{model}}" autocomplete="off"
+                  onclick="selected_model(this)">
+              </td>
+            </tr>
+            {% endfor%}
+          </tbody>
+        </table>
+
+        <button type="button" name="" onclick="classify()" id="" class="btn btn-sm btn-outline-secondary bt-changed"
+          btn-lg btn-block">Classify</button>
+
+      </div>
+    </div>
+  </div>
+  <div class="col-sm">
+    <div class="row">
+      <div class="card">
+        <div class="card-header card-header-changed ">
+          <div class="row">
+            <div class="col">
+              Reconstructed Images
+            </div>
+
+            <div class="col-5">
+              Use all folder images <input type="checkbox" name="saved_image" value="checkbox_img_all_images"
+                id="checkbox_all_images" class="checkbox_img" onclick="selected_image(this)">
+            </div>
+          </div>
+        </div>
+        <div class="card-body" style="height:210px; overflow-x: scroll; overflow-x: hidden;">
+          <div class="reconstructed-image-content">
+            <fieldset class="radio-image">
+              <div class="row">
+                {% for image in images%}
+                <div class="col-4 mb-2">
+                  <div class="card">
+                    <div class="card-header card-header-changed">{{ image|replace(".png", "") }}</div>
+                    <label for="{{image}}">
+                      <input type="checkbox" name="saved_image" value="checkbox_img_{{image}}" id="{{image}}"
+                        class="checkbox_img_" onclick="selected_image(this)">
+
+                      <img src="static/reconstructed_images/{{image|safe}}" class="img-thumbnail mt-2"
+                        style="width: 130px; height:110px;">
+                    </label>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+            </fieldset>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-2">
+      <div class="col-sm" id="card-chart" style="visibility: hidden; overflow-y: scroll;">
+        <div id="chartContainer" class="container" style="height: 300px; "></div>
+      </div>
+    </div>
+    <div class="row mt-2">
+      <div class="col-sm" id="matrix_confusion" style="visibility: hidden; text-align: right;">
+        <button type="button" name="" onclick="matrix_confusion_modal()" id=""
+          class="btn btn-sm btn-outline-secondary bt-changed" btn-lg btn-block">Matrix Confusion</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="modal" class="modal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content" style="width: 50em; height: 30em;">
+      <div id="chartContainer_modal" class="container" style="width: 30em; height: 25em;"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary bt-changed" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div id="modal_cm" class="modal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content" style="width: 50em; height: 30em;">
+      <img id="cm_image">
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary bt-changed" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}
+
+{% block new_scripts%}
+<script src="{{ url_for('static', filename='js/node_modules/chart.js/dist/Chart.min.js')}}"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+<script type=text/javascript>
+
+  var filename_image = []
+  var filename_model = []
+  var card_chart = document.getElementById("card-chart")
+  var all_selected = false;
+
+  function selected_image(checkbox) {
+    var checkbox_value = checkbox.value.replace('checkbox_img_', '')
+    if(checkbox_value == 'all_images'){
+      all_checkbox = document.getElementsByClassName('checkbox_img_');
+      for (var i=0; i<all_checkbox.length; i++) {
+        all_checkbox[i].click();        
+      }
+      if (all_selected){
+        filename_image = [];
+        all_selected = false;
+      }else{
+        all_selected = true;
+      }
+    }else{
+      if(filename_image.includes(checkbox_value)){
+        filename_image.pop(checkbox_value)
+      }else{
+        filename_image.push(checkbox_value)
+      }
+    }
+    console.log(filename_image.length)
+  }
+
+  function selected_model(checkbox) {
+    var checkbox_value = checkbox.value.replace('checkbox_', '')
+    if(filename_model.includes(checkbox_value)){
+      filename_model.pop(checkbox_value);
+    }else{
+      filename_model.push(checkbox_value);
+    }
+    console.log(filename_model)
+    
+  }
+
+  function explodePie (e) {
+      if(typeof (e.dataSeries.dataPoints[e.dataPointIndex].exploded) === "undefined" || !e.dataSeries.dataPoints[e.dataPointIndex].exploded) {
+        e.dataSeries.dataPoints[e.dataPointIndex].exploded = true;
+      } else {
+        e.dataSeries.dataPoints[e.dataPointIndex].exploded = false;
+      }
+      e.chart.render();
+
+  }
+
+
+  function show_chart(dps, container){
+    if (container == "chartContainer_modal"){
+      $('#modal').modal('show')
+    }
+    console.log(dps)
+      var chart = new CanvasJS.Chart(container, {
+          exportEnabled: false,
+          animationEnabled: true,
+          title:{
+            text: "Diatoms Classification"
+          },
+          legend:{
+            cursor: "pointer",
+            itemclick: explodePie
+          },
+          data: [{
+            type: "pie",
+            showInLegend: true,
+            toolTipContent: "{name}: <strong>{y}%</strong>",
+            indexLabel: "{name} - {y}%",
+            dataPoints: dps
+            
+          }]
+        });
+        chart.render();
+
+    }
+
+    function convert_to_datapoint(y, labels){
+      var dps = []
+        for(i=0;i<y.length;i++){
+          l = labels[i] +1
+          dps.push({y: Math.round(Number(y[i])*100), name : 'Class \"'+l+'\"'});		
+        }
+        return dps;
+
+    }
+
+  function matrix_confusion_modal(){
+    
+    $('#modal_cm').modal('show')
+  }
+
+  function classify(){
+    req = $.ajax({
+        url : '/classify',
+        type: 'POST',
+        data: {'model_name': filename_model, 'image_name': filename_image},
+    });
+
+    req.done(function (data_result) {
+      console.log(data_result)
+      card_chart.style.visibility = "visible"
+      cm_image = document.getElementById('cm_image')
+      cm_image.src = 'static/results/'+data_result.cm_image
+      
+        if (data_result.values.length == 1){
+
+          y = data_result.values[0];
+          labels = data_result.indices[0];
+          dps = convert_to_datapoint(y, labels);
+          show_chart(dps, "chartContainer");
+        }else{
+          var container = document.getElementById('chartContainer')
+
+          var div_col = document.createElement('div');
+          div_col.setAttribute('class', 'col');
+
+          var div_card = document.createElement('div');
+          div_card.setAttribute('class', 'card');
+
+          var div_card_header = document.createElement('div');
+          div_card_header.setAttribute('class', 'card-header card-header-changed');
+          div_card_header.innerHTML = "Output";
+
+          var div_card_body = document.createElement('div');
+          div_card_body.setAttribute('class', 'card-body');
+
+          var table = document.createElement('table');
+          table.setAttribute('class','table table-inverse');
+
+          var thead = document.createElement('thead');
+          thead.setAttribute('class', 'thead-inverse');
+
+          var tr = document.createElement('tr');
+
+          var th1 = document.createElement('th');
+          th1.innerHTML = "Image Name";                  
+
+          var th2 = document.createElement('th');
+          th2.innerHTML = "Predicted Class";                  
+          
+          var th3 = document.createElement('th');
+          th3.innerHTML = "Chart";
+
+          var tbody = document.createElement('tbody');
+          
+
+          for(var i=0;i<data_result.values.length;i++){
+            value = data_result.values[i];
+            indice = data_result.indices[i];
+
+            console.log(value, indice);
+            
+            ind = indice[0] + 1
+            
+            tr_loop = document.createElement('tr');
+
+            td_scope = document.createElement('td');
+            td_scope.setAttribute('scope', 'row');
+            td_scope.innerHTML = filename_image[i];
+
+            td2_tr = document.createElement('td');
+            td2_tr.innerHTML = ind;
+
+            td3_tr = document.createElement('td');
+            
+            var element = document.createElement('button');
+            element.setAttribute('class', "btn btn-sm btn-outline-secondary bt-changed");
+            element.setAttribute('type', "button");
+            element.innerHTML = "chart";
+            element.onclick = (function (value, indice) {
+              return function () {
+                dsp = convert_to_datapoint(value, indice);
+                show_chart(dsp, "chartContainer_modal");
+              };
+              
+            })(value, indice)
+
+            td3_tr.appendChild(element);
+            tr_loop.appendChild(td_scope);
+            tr_loop.appendChild(td2_tr);
+            tr_loop.appendChild(td3_tr);
+
+            tbody.appendChild(tr_loop);
+          }
+
+            tr.appendChild(th1);
+            tr.appendChild(th2);
+            tr.appendChild(th3);
+
+            thead.appendChild(tr);
+            table.appendChild(thead);
+            table.appendChild(tbody);
+            div_card_body.appendChild(table);
+            
+            div_card.appendChild(div_card_header);
+            div_card.appendChild(div_card_body);
+
+            div_col.appendChild(div_card);
+            container.innerHTML = ""
+            container.appendChild(div_col);
+
+            matrix_confusion = document.getElementById('matrix_confusion')
+            matrix_confusion.style.visibility = "visible"
+
+        }
+      
+    });
+  }
+</script>
+
+{% endblock %}

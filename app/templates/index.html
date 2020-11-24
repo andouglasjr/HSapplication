@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title_content%} Step 1. Welcome {% endblock %}
+{% block nav_flex_column  %}
+
+<ul class="nav flex-column">
+    <li class="nav-item">
+      <a class="nav-link active" href="#">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+        Welcome <span class="sr-only">(current)</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link disabled" href="#">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+        Hologram Acquisition
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link disabled" href="#">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+        Processing
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link disabled" href="#">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+        Reconstruction
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link disabled" href="#">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+        Segmentation
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link disabled" href="#">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+        Machine Learning
+      </a>
+    </li>
+  </ul>
+  
+{% endblock %}
+
+{% block buttons_navigation %}
+<!--button type="button" class="btn btn-sm btn-outline-secondary">Previous</button-->
+<a href="{{url_for('hologram_acquisition')}}"><button type="button" class="btn btn-sm btn-outline-secondary bt-changed">Next</button></a>
+{% endblock %}
+
+{% block content %}
+<p>This interface was developed by Andouglas Junior in his thesis to operate 
+    the Holographic System, but can be used in any holographic experiment that uses a CCD sensor (camera)
+    to acquire the hologram.</p>
+<p>The process that could be performed for this interface are: </p>
+<ul>
+    <li><b>Acquisition:</b> The camera plugged in the computer is accessed by the browser and the hologram is shown
+    in the view.</li>
+    <li><b>Processing:</b>In this step is possible change some image properties, like bright and contrast.</li>
+    <li><b>Reconstruction: </b> The spectrum angle method is used in order to obtain the amplitude and phase of hologram.</li>
+    <li><b>Segmentation:</b> Depending on how the samples is disposed in the image, it is necessary
+    to perform separation to be inseting on the machine learning model.</li>
+    <li><b>Machine Learning: </b> In this last step, the user can upload some ML models and use it to classify the sample.</li>
+</ul>
+<p>To start the process click on the button "Next" on the top-right.</p>
+{% endblock %}
