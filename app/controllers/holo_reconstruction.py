@@ -63,13 +63,13 @@ def spatial_filter():
         plt.axis('off')
         fig.tight_layout()
         rand_number = random.random()
-        filename = 'fft' + str(rand_number) + '.png'
+        filename = '/fft' + str(rand_number) + '.png'
         plt.savefig(RECONSTRUCTION_DIR + filename,
                     bbox_inches='tight',
                     transparent=True,
                     pad_inches=0,
                     dpi=dpi)
-
+        filename = 'static/results/'+EXPERIMENT_NAME+'/reconstructed_hologram'+filename
         return json.dumps({'fft': filename})
 
 
@@ -81,11 +81,8 @@ def reconstruct_from_fft():
     mask_pos_y = float(request.form.get('mask_pos_y'))
     mask_width = float(request.form.get('mask_width'))
     mask_height = float(request.form.get('mask_height'))
-    image_scaleX = float(request.form.get('image_scaleX'))
-    image_scaleY = float(request.form.get('image_scaleY'))
 
-    ft = apply_mask(ft, mask_pos_x, mask_pos_y, mask_width, mask_height,
-                    image_scaleX, image_scaleY)
+    ft = apply_mask(ft, mask_pos_x, mask_pos_y, mask_width, mask_height)
     r, fft = hp.reconstrut_from_fft(data, ft, G, contains_zero, d_old)
 
     RESULT_DIR = os.path.join(app.static_folder, 'results')        
@@ -94,17 +91,17 @@ def reconstruct_from_fft():
     EXPERIMENT_DIR = os.path.join(RESULT_DIR, EXPERIMENT_NAME)
     RECONSTRUCTION_DIR = os.path.join(EXPERIMENT_DIR, 'reconstructed_hologram')
 
-    amp_img, phase_img = save_images(r, fft, RECONSTRUCTION_DIR)
+    amp_img, phase_img = utils.save_images(r, fft, RECONSTRUCTION_DIR)
     amp_img = 'static/results/'+EXPERIMENT_NAME+'/reconstructed_hologram/'+amp_img
     phase_img = 'static/results/'+EXPERIMENT_NAME+'/reconstructed_hologram/'+phase_img
     return json.dumps({'amp_img': amp_img, 'phase_img': phase_img})
 
 
 def apply_mask(fft, mask_pos_x, mask_pos_y, mask_width, mask_height,
-               image_scaleX, image_scaleY):
+               image_scaleX=None, image_scaleY=None):
     out = fft.copy()
-    mask = np.zeros((round(out.data.shape[2] * image_scaleX),
-                     round(out.data.shape[1] * image_scaleY)))
+    mask = np.zeros((round(out.data.shape[2]),
+                     round(out.data.shape[1])))
 
     mask_pos_x = mask_pos_x
     mask_pos_y = mask_pos_y

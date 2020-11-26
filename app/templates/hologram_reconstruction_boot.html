@@ -228,7 +228,7 @@
             </form>
           </div>
 
-          <div id="container_hologram" class="mx-auto mt-2" style="width: fit-content">
+          <div id="container_hologram" class="mx-auto mt-2">
           </div>
 
         </div>
@@ -334,9 +334,10 @@
   }
 
   function buildStage(images) {
+    console.log(images);
 
-    var width = 400;
-    var height = 400;
+    var width = images.width;
+    var height = images.height;
 
     var stage = new Konva.Stage({
       container: 'container_hologram',
@@ -392,8 +393,6 @@
       x: 0,
       y: 0,
       borderSize: 1,
-      scaleX: scale_x,
-      scaleY: scale_y,
     });
 
     hologram.zIndex(0);
@@ -610,7 +609,7 @@
 
         req.done(function (data) {
           var sources = {
-            hologram: '/static/saved_holograms/' + data.fft,
+            hologram: data.fft,
           };
           console.log(sources)
 

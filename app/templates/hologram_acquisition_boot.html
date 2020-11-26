@@ -94,20 +94,37 @@
       <div class="card-body">
         <div class="input-group mb-3">
           <p class="card-header-changed">
-            Give a name to the experiment. Then, acquire the hologram image or choose a local file to upload. You can
+            Give a name to the experiment. Then, choose the camera to acquire the hologram image or select a local file to upload it. You can
             use images or mat files.
           </p>
-          <div class="input-group-prepend">
-            <span class="input-group-text card-header-changed" id="basic-addon1">Experiment Name:</span>
+          <div class="col-sm">
+            <div class="row-sm-1">
+              <div class="input-group-prepend">
+                <span class="input-group-text card-header-changed" id="basic-addon1">Experiment Name:</span>
+                <input id="experiment_name" type="text" class="form-control card-header-changed" placeholder=""
+                  aria-label="hologram_1" aria-describedby="basic-addon1" value="Experiment1">
+              </div>
+            </div>
+            <div class="row-sm-1">
+              <div class="input-group-prepend">
+                <span class="input-group-text card-header-changed" id="basic-addon1">Cameras:</span>
+                <select class="custom-select" id="camera_options" onchange="start_camera(this)">
+                  <option selected>-</option>
+                  {% for camera in available_cameras%}
+                  <option class="card-header-changed" value="{{camera}}">{{camera}}</option>
+                  {% endfor %}
+                </select>
+              </div>
+
+
+            </div>
           </div>
-          <input id="experiment_name" type="text" class="form-control card-header-changed " placeholder=""
-            aria-label="hologram_1" aria-describedby="basic-addon1" value="Experiment1">
         </div>
       </div>
-      <div class="content text-center">
-        <img src="{{ url_for('video_feed') }}" style="max-width: 450px;" class="img-thumbnail">
+      <div class="content text-center" id="video_feed_content">
+
       </div>
-      <div class="card-body">
+      <div class="card-body" id="rec_hologram_container" style="visibility: hidden;">
         <!--h5 class="card-title">Card title</h5-->
         <div class="input-group mb-3">
           <div class="input-group-prepend">
@@ -143,7 +160,7 @@
       </div>
 
       <div class="card-body row" id="image_card" style="height: 20em; overflow-y: scroll;">
-        <fieldset class="radio-image">
+        <fieldset class="radio-image" id="field_id">
           {% for image in card_images%}
           <label for="{{image}}">
             <input type="radio" name="saved_image" value="checkbox_{{image}}" id="{{image}}"
@@ -211,6 +228,28 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script>
   var filename = ""
+  
+
+  function start_camera(button) {
+    var camera_option = document.getElementById('camera_options').value
+    console.log('Entrou')
+
+    req = $.ajax({
+      url: '/start_camera',
+      type: 'POST',
+      data: { camera_option: camera_option },
+    });
+
+    req.done(function (data) {
+      var video_feed_content = document.getElementById('video_feed_content');
+      video_feed_content.innerHTML = "<img src='{{ url_for('video_feed') }}' style='max-width: 450px;'class='img-thumbnail'>";
+      
+      var rec_hologram_container = document.getElementById('rec_hologram_container');
+      rec_hologram_container.style.visibility = "visible";
+      rec_hologram_container.style.display = "initial";
+    });
+
+  }
 
   function next_page_modal(button) {
     var holo_attrs = document.getElementById('holo-attrs').value
@@ -276,16 +315,12 @@
 
   function selected_image(checkbox) {
     var checkbox_value = checkbox.value
-    //disable_div('#checkbox', '#image_card')
-    //checkbox.disabled = false
-
     filename = checkbox_value.replace('checkbox_', '')
-    console.log(filename)
   }
 
   function record_hologram(button) {
     var image_name = document.getElementById("image_name").value
-    var image_card = document.getElementById("image_card")
+    var image_card = document.getElementById("field_id")
     var activate = true;
     req = $.ajax({
       url: '/record_hologram',
@@ -298,34 +333,19 @@
       if (data.rec_hologram) {
         $('#bt_record').text("Acquire Again")
         document.getElementById("bt_confirm").style.visibility = "visible"
-        var i;
-        console.log(data)
-        image_card.innerHTML = "";
-        for (i = 0; i < data.images_folder.length; i++) {
-          var name = data.images_folder[i];
-          image_card.innerHTML += '<button type="button" class="btn btn-outline-secondary m-1" data-toggle="button" aria-pressed="false" >' +
-            '<img src="static/saved_holograms/' + name + '" class="img-thumbnail" style="width: 130px; height:110px;" /></button>'
-        }
-
-
+        filename = image_name
+        
       } else {
         $('#bt_record').text("Record Hologram")
         document.getElementById("bt_confirm").style.visibility = "hidden"
-        var i;
-        console.log(data)
-        image_card.innerHTML = "";
-        for (i = 0; i < data.images_folder.length; i++) {
-          var name = data.images_folder[i];
-          image_card.innerHTML += '<button type="button" class="btn btn-outline-secondary m-1" data-toggle="button" aria-pressed="false" >' +
-            '<img src="static/saved_holograms/' + name + '" class="img-thumbnail" style="width: 130px; height:110px;" /></button>'
-        }
       };
 
     });
-
   }
 
   $(document).ready(function () {
+    var rec_hologram_container = document.getElementById('rec_hologram_container');
+    rec_hologram_container.style.display = "none";
 
     $('#upload_image').click(function (event) {
       var formDataRaw = $('#fileForm')[0];
@@ -350,17 +370,6 @@
             '<img src="static/saved_holograms/' + name + '" class="img-thumbnail" style="width: 130px; height:110px;" /></button>'
         }
       });
-    });
-
-
-    dir_path = os.path.dirname(os.path.dirname(__file__))
-    path_directory = dir_path + '/static/saved_holograms/'
-    console.log('entrou')
-
-    $('#bt_record').on('click', function () {
-
-
-
     });
 
   });

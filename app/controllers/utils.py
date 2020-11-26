@@ -3,6 +3,7 @@ from app import app
 import matplotlib.pyplot as plt
 import random
 import numpy as np
+import cv2
 
 #Directories
 STATIC_DIRECTORY = app.static_folder
@@ -90,3 +91,14 @@ def save_images(r, fft, path_directory):
     phase_img = 'reconstructed_phase' + str(rand_number) + '.png'
 
     return amp_img, phase_img
+
+def check_available_cameras():
+    # detect all connected webcams
+    valid_cams = []
+    for i in range(2):
+        cap = cv2.VideoCapture(i)
+        if cap is (not None) or cap.isOpened():
+            valid_cams.append(i)
+        cap.release()
+
+    return valid_cams

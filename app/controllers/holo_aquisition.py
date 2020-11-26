@@ -1,5 +1,5 @@
 from imutils.video import VideoStream
-from flask import Response, jsonify, render_template, request, session
+from flask import Response, jsonify, render_template, request, session, stream_with_context
 from flask_session import Session
 
 import numpy as np
@@ -25,29 +25,34 @@ thread_camera = None
 #Directories
 SAVED_HOLOGRAMS_DIR = os.path.join(app.static_folder, 'saved_holograms')
 
+@app.route("/start_camera", methods=['POST'])
+def start_camera():
+    global lock, thread_camera, vs, lock
+    lock = threading.Lock()
+    camera = request.form.get('camera_option')
+    
+    if not thread_camera:
+        vs = VideoStream(src=int(camera))
+        vs.start()
+        time.sleep(2.0)
+    
+    return jsonify({
+            'result': 'sucess',
+        })
+    
+
 
 @app.route("/hologram_acquisition")
 def hologram_acquisition():
-    global lock, thread_camera, vs, lock
-    lock = threading.Lock()
-
-    if not thread_camera:
-        vs = VideoStream(src=0)
-        vs.start()
-        time.sleep(2.0)
-
-        thread_camera = threading.Thread(target=thread_acquisition)
-        thread_camera.daemon = True
-        thread_camera.start()
-
+    global vs
+    vs = None
     images = [
         f for f in listdir(SAVED_HOLOGRAMS_DIR)
         if isfile(join(SAVED_HOLOGRAMS_DIR, f))
     ]
 
     return render_template("hologram_acquisition_boot.html",
-                           card_images=images)
-
+                           card_images=images, available_cameras=utils.check_available_cameras())
 
 @app.route('/upload', methods=['POST', 'GET'])
 def upload():
@@ -105,6 +110,7 @@ def capture(image_name):
     if rec_hologram:
         rec_hologram = False
     else:
+        outputFrame = cv2.cvtColor(outputFrame, cv2.COLOR_BGR2GRAY)
         cv2.imwrite(SAVED_HOLOGRAMS_DIR + '/' + image_name, outputFrame)
         rec_hologram = True
     return rec_hologram
@@ -122,7 +128,8 @@ def list_images_folder():
 def stop_thread():
     global stop_thread, vs, thread_camera
     stop_thread = True
-    vs.stream.stream.release()
+    if vs is not None:
+        vs.stream.stream.release()
     thread_camera = None
 
     image_name = None
@@ -178,7 +185,11 @@ def record_hologram():
 
 @app.route("/video_feed")
 def video_feed():
-    return Response(generate(),
+    thread_camera = threading.Thread(target=thread_acquisition)
+    thread_camera.daemon = True
+    thread_camera.start()
+    
+    return Response(stream_with_context(generate()),
                     mimetype="multipart/x-mixed-replace; boundary=frame")
 
 
