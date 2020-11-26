@@ -81,8 +81,8 @@
 
 {% block buttons_navigation %}
 <a href="#"><button type="button" class="btn btn-sm btn-outline-secondary bt-changed">Previous</button></a>
-<a href="#"><button onclick="skip_next_page()" type="button"
-    class="btn btn-sm btn-outline-secondary bt-changed">Skip</button></a>
+<a href="#"><button onclick="skip_next_page()" type="button" class="btn btn-sm btn-outline-secondary bt-changed">Skip
+    Processing</button></a>
 <a href="#"><button onclick="next_page()" type="button"
     class="btn btn-sm btn-outline-secondary bt-changed">Next</button></a>
 {% endblock %}
@@ -94,7 +94,8 @@
       <div class="card-body">
         <div class="input-group mb-3">
           <p class="card-header-changed">
-            Give a name to the experiment. Then, choose the camera to acquire the hologram image or select a local file to upload it. You can
+            Give a name to the experiment. Then, choose the camera to acquire the hologram image or select a local file
+            to upload it. You can
             use images or mat files.
           </p>
           <div class="col-sm">
@@ -105,24 +106,18 @@
                   aria-label="hologram_1" aria-describedby="basic-addon1" value="Experiment1">
               </div>
             </div>
-            <div class="row-sm-1">
-              <div class="input-group-prepend">
-                <span class="input-group-text card-header-changed" id="basic-addon1">Cameras:</span>
-                <select class="custom-select" id="camera_options" onchange="start_camera(this)">
-                  <option selected>-</option>
-                  {% for camera in available_cameras%}
-                  <option class="card-header-changed" value="{{camera}}">{{camera}}</option>
-                  {% endfor %}
-                </select>
+            <div class="row-sm-1" id="start_camera_div">
+              <div class="input-group-prepend mt-2 float-right">
+                <a href="#"><button onclick="start_camera(this)" type="button"
+                    class="btn btn-sm btn-outline-secondary bt-changed">Start Camera</button></a>
               </div>
-
-
             </div>
           </div>
         </div>
       </div>
       <div class="content text-center" id="video_feed_content">
-
+        <video id="webcam" autoplay playsinline width="640" height="480"></video>
+        <canvas id="canvas" class="d-none"></canvas>
       </div>
       <div class="card-body" id="rec_hologram_container" style="visibility: hidden;">
         <!--h5 class="card-title">Card title</h5-->
@@ -133,54 +128,52 @@
           <input id="image_name" type="text" class="form-control card-header-changed " placeholder=""
             aria-label="hologram_1" aria-describedby="basic-addon1" value="hologram_1.jpg">
         </div>
-        <a href="#" class="record_hologram"><button onclick="record_hologram()" type="button" id="bt_record"
-            class="btn btn-sm btn-outline-secondary card-header-changed ">Record Hologram</button></a>
-        <a href="#" class="confirm_hologram"><button onclick="next_page()" type="button" id="bt_confirm"
+        <a href="#" class="record_hologram"><button onclick="record_hologram_visualization()" type="button"
+            id="bt_record" class="btn btn-sm btn-outline-secondary card-header-changed ">Record Hologram</button></a>
+        <a href="#" class="confirm_hologram"><button onclick="record_hologram()" type="button" id="bt_confirm"
             class="btn btn-sm btn-outline-secondary" style="visibility: hidden;">Next Step</button></a>
       </div>
     </div>
   </div>
   <div class="col-sm">
-    <div class="card" style="margin-bottom: 10px;">
-      <div class="card-header card-header-changed ">
-        Saved Images
-      </div>
-      <p class="h6 ml-4 mt-4 card-header-changed ">Please, select the picture or upload it.</p>
-      <form method="post" enctype="multipart/form-data" id="fileForm">
-        <div class="form-group ml-4 mr-4 text-right">
-          <input type="file" class="form-control-file" id="image_uploaded" name="image1">
-          <button type="button" id="upload_image" class="btn btn-outline-secondary m-1 bt-changed">Upload</button>
-
-        </div>
-      </form>
-    </div>
     <div class="card">
       <div class="card-header card-header-changed ">
-        Directory: /saved/holograms
+        Directory: /saved_holograms
       </div>
 
-      <div class="card-body row" id="image_card" style="height: 20em; overflow-y: scroll;">
-        <fieldset class="radio-image" id="field_id">
-          {% for image in card_images%}
-          <label for="{{image}}">
-            <input type="radio" name="saved_image" value="checkbox_{{image}}" id="{{image}}"
-              onclick="selected_image(this)">
-            {% if '.mat' in image %}
-            <img src="static/logos/mat_file.png" class="img-thumbnail" style="width: 130px; height: 110px;"
-              alt="{{image|safe}}">
-            <p style="font-size: small; text-align: center;">{{image|safe}}</p>
-            {% else %}
-            <img src="static/saved_holograms/{{image|safe}}" class="img-thumbnail" style="width: 130px; height:110px;">
-            <p style="font-size: small; text-align: center;">{{image|safe}}</p>
-            {% endif %}
-          </label>
-          {% endfor %}
-        </fieldset>
-
-
+      <div class="card-body row" style="height: 200px; margin-right: -1px;  overflow-y: scroll;">
+        <div class="card-body row" id="image_card" style="height: 200px;">
+          <fieldset class="radio-image" id="field_id">
+            {% for image in card_images%}
+            <label for="{{image}}">
+              <input type="radio" name="saved_image" value="checkbox_{{image}}" id="{{image}}"
+                onclick="selected_image(this)">
+              {% if '.mat' in image %}
+              <img src="static/logos/mat_file.png" class="img-thumbnail" style="width: 130px; height: 110px;"
+                alt="{{image|safe}}">
+              <p style="font-size: small; text-align: center;">{{image|safe}}</p>
+              {% else %}
+              <img src="static/saved_holograms/{{image|safe}}" class="img-thumbnail"
+                style="width: 130px; height:110px;">
+              <p style="font-size: small; text-align: center;">{{image|safe}}</p>
+              {% endif %}
+            </label>
+            {% endfor %}
+          </fieldset>
+        </div>
       </div>
-
-
+      <hr style="height:2px;border-width:0;color:rgb(187, 187, 187);background-color:rgb(187, 187, 187)">
+      <form method="post" enctype="multipart/form-data" id="fileForm">
+        <div class="input-group">
+          <div class="custom-file">
+            <input type="file" class="custom-file-input" id="image_uploaded" name="image1">
+            <label class="custom-file-label" for="image_uploaded">Choose file</label>
+          </div>
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary bt-changed" id="upload_image" type="button">Upload</button>
+          </div>
+        </div>
+      </form>
     </div>
   </div>
 </div>
@@ -226,29 +219,40 @@
 
 {% block new_scripts%}
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://unpkg.com/webcam-easy/dist/webcam-easy.min.js"></script>
 <script>
   var filename = ""
-  
+  const webcamElement = document.getElementById('webcam');
+  const canvasElement = document.getElementById('canvas');
+
+  webcamElement.style.visibility = 'hidden';
+  webcamElement.style.display = 'none';
+  canvasElement.style.visibility = 'hidden';
+  canvasElement.style.display = 'none';
+
+  const webcam = new Webcam(webcamElement, 'user', canvasElement);
+  var video_playing = true;
+  let picture = null;
+
+  var experiment_name = document.getElementById("experiment_name").value
+  var start_camera_div = document.getElementById("start_camera_div")
 
   function start_camera(button) {
-    var camera_option = document.getElementById('camera_options').value
-    console.log('Entrou')
-
-    req = $.ajax({
-      url: '/start_camera',
-      type: 'POST',
-      data: { camera_option: camera_option },
-    });
-
-    req.done(function (data) {
-      var video_feed_content = document.getElementById('video_feed_content');
-      video_feed_content.innerHTML = "<img src='{{ url_for('video_feed') }}' style='max-width: 450px;'class='img-thumbnail'>";
-      
-      var rec_hologram_container = document.getElementById('rec_hologram_container');
-      rec_hologram_container.style.visibility = "visible";
-      rec_hologram_container.style.display = "initial";
-    });
-
+    start_camera_div.style.visibility = "hidden";
+    webcamElement.style.visibility = 'visible';
+    webcamElement.style.display = 'initial';
+    canvasElement.style.visibility = 'visible';
+    canvasElement.style.display = 'initial';
+    webcam.start()
+      .then(result => {
+        console.log("webcam started");
+        var rec_hologram_container = document.getElementById('rec_hologram_container');
+        rec_hologram_container.style.visibility = "visible";
+        rec_hologram_container.style.display = "initial";
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
   function next_page_modal(button) {
@@ -256,13 +260,13 @@
     console.log(holo_attrs)
     var experiment_name = document.getElementById("experiment_name").value
     req = $.ajax({
-      url: '/stop_thread',
+      url: '/record_hologram',
       type: 'POST',
-      data: { exp_name: experiment_name, holo_attrs: holo_attrs, filename: filename },
+      data: { 'exp_name': experiment_name, 'holo_attrs': holo_attrs, 'filename': filename },
     });
 
     req.done(function (data) {
-      window.location.href = "{{ url_for('holo_reconstruction', image='') }}" + data.image_path;
+      window.location.href = data.path;
     });
   }
 
@@ -273,13 +277,13 @@
       var experiment_name = document.getElementById("experiment_name").value
 
       req = $.ajax({
-        url: '/stop_thread',
+        url: '/record_hologram',
         type: 'POST',
-        data: { exp_name: experiment_name, filename: filename },
+        data: { 'exp_name': experiment_name, 'filename': filename },
       });
 
       req.done(function (data) {
-        window.location.href = "{{ url_for('processing_hologram', image='') }}" + data.image_path;
+        window.location.href = data.path;
       });
 
     }
@@ -293,23 +297,17 @@
       var experiment_name = document.getElementById("experiment_name").value
 
       req = $.ajax({
-        url: '/stop_thread',
+        url: '/record_hologram',
         type: 'POST',
-        data: { exp_name: experiment_name, filename: filename },
+        data: { 'exp_name': experiment_name, 'filename': filename },
       });
 
       req.done(function (data) {
         console.log(data);
-        window.location.href = "{{ url_for('holo_reconstruction', image='') }}" + data.image_path;
+        window.location.href = data.path;
       });
 
     }
-
-  }
-
-  function disable_div(checkbox_id, div_id) {
-    var isChecked = $(checkbox_id + ':checked').length > 0;
-    $(div_id + ' *').attr("disabled", isChecked).off('click')
 
   }
 
@@ -318,34 +316,45 @@
     filename = checkbox_value.replace('checkbox_', '')
   }
 
+  function record_hologram_visualization(button) {
+    if (video_playing) {
+      picture = webcam.snap();
+      webcamElement.pause();
+      $('#bt_record').text("Acquire Again")
+      document.getElementById("bt_confirm").style.visibility = "visible"
+      video_playing = false;
+    } else {
+      picture = null;
+      webcamElement.play();
+      $('#bt_record').text("Record Hologram")
+      document.getElementById("bt_confirm").style.visibility = "hidden"
+      video_playing = true;
+    }
+  }
+
   function record_hologram(button) {
     var image_name = document.getElementById("image_name").value
-    var image_card = document.getElementById("field_id")
     var activate = true;
     req = $.ajax({
       url: '/record_hologram',
       type: 'POST',
-      data: { image_name: image_name }
+      data: { 'image_uri': picture, 'filename': image_name, 'exp_name': experiment_name },
     });
 
     req.done(function (data) {
-      console.log(data)
-      if (data.rec_hologram) {
-        $('#bt_record').text("Acquire Again")
-        document.getElementById("bt_confirm").style.visibility = "visible"
-        filename = image_name
-        
-      } else {
-        $('#bt_record').text("Record Hologram")
-        document.getElementById("bt_confirm").style.visibility = "hidden"
-      };
-
+      window.location.href = data.path;
     });
   }
 
   $(document).ready(function () {
     var rec_hologram_container = document.getElementById('rec_hologram_container');
     rec_hologram_container.style.display = "none";
+
+    $('#image_uploaded').on('change', function () {
+      var fileName = $(this).val();
+      fileName = fileName.replace("C:\\fakepath\\", "");
+      $(this).next('.custom-file-label').html(fileName);
+    })
 
     $('#upload_image').click(function (event) {
       var formDataRaw = $('#fileForm')[0];
@@ -365,9 +374,7 @@
         console.log(data)
         image_card.innerHTML = "";
         for (i = 0; i < data.images_folder.length; i++) {
-          var name = data.images_folder[i];
-          image_card.innerHTML += '<button type="button" class="btn btn-outline-secondary m-1" data-toggle="button" aria-pressed="false" >' +
-            '<img src="static/saved_holograms/' + name + '" class="img-thumbnail" style="width: 130px; height:110px;" /></button>'
+          $("#image_card").load(window.location.href + " #image_card");
         }
       });
     });

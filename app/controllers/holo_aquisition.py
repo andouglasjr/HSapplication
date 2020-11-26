@@ -1,12 +1,10 @@
+import base64
 from imutils.video import VideoStream
-from flask import Response, jsonify, render_template, request, session, stream_with_context
+from flask import Response, jsonify, render_template, request, session, stream_with_context, url_for
 from flask_session import Session
 
 import numpy as np
-import threading
-import datetime
 import imutils
-import time
 import cv2
 import os
 import random
@@ -22,37 +20,20 @@ from PIL import Image
 import app.controllers.utils as utils
 thread_camera = None
 
-#Directories
+# Directories
 SAVED_HOLOGRAMS_DIR = os.path.join(app.static_folder, 'saved_holograms')
-
-@app.route("/start_camera", methods=['POST'])
-def start_camera():
-    global lock, thread_camera, vs, lock
-    lock = threading.Lock()
-    camera = request.form.get('camera_option')
-    
-    if not thread_camera:
-        vs = VideoStream(src=int(camera))
-        vs.start()
-        time.sleep(2.0)
-    
-    return jsonify({
-            'result': 'sucess',
-        })
-    
 
 
 @app.route("/hologram_acquisition")
 def hologram_acquisition():
-    global vs
-    vs = None
     images = [
         f for f in listdir(SAVED_HOLOGRAMS_DIR)
         if isfile(join(SAVED_HOLOGRAMS_DIR, f))
     ]
 
     return render_template("hologram_acquisition_boot.html",
-                           card_images=images, available_cameras=utils.check_available_cameras())
+                           card_images=images)
+
 
 @app.route('/upload', methods=['POST', 'GET'])
 def upload():
@@ -71,51 +52,6 @@ def upload():
         })
 
 
-def thread_acquisition():
-    global vs, outputFrame, lock, rec_hologram, stop_thread
-    rec_hologram = False
-    stop_thread = False
-    total = 0
-    while not stop_thread:
-
-        frame = vs.read()
-        frame = imutils.resize(frame, width=600)
-
-        with lock:
-            outputFrame = frame.copy()
-
-        if rec_hologram:
-            while rec_hologram:
-                continue
-
-
-def generate():
-    global outputFrame, lock
-    while True:
-        with lock:
-            if outputFrame is None:
-                continue
-            (flag, encodedImage) = cv2.imencode(".jpg", outputFrame)
-
-            if not flag:
-                continue
-
-        yield (b'--frame\r\n'
-               b'Content-Type: image/jpeg\r\n\r\n' + bytearray(encodedImage) +
-               b'\r\n')
-
-
-def capture(image_name):
-    global outputFrame, lock, rec_hologram
-    if rec_hologram:
-        rec_hologram = False
-    else:
-        outputFrame = cv2.cvtColor(outputFrame, cv2.COLOR_BGR2GRAY)
-        cv2.imwrite(SAVED_HOLOGRAMS_DIR + '/' + image_name, outputFrame)
-        rec_hologram = True
-    return rec_hologram
-
-
 def list_images_folder():
     images = [
         f for f in listdir(SAVED_HOLOGRAMS_DIR)
@@ -124,85 +60,62 @@ def list_images_folder():
     return images
 
 
-@app.route('/stop_thread', methods=['POST'])
-def stop_thread():
-    global stop_thread, vs, thread_camera
-    stop_thread = True
-    if vs is not None:
-        vs.stream.stream.release()
-    thread_camera = None
-
-    image_name = None
-    experiment_name = request.form.get('exp_name')
-    holo_attr = request.form.get('holo_attrs')
-    filename = request.form.get('filename')
-    print(filename)
-
-    result = utils.generate_experiment_tree_directory(experiment_name)
-
-    HOLOGRAM_DIR = 'results/' + experiment_name + '/hologram'
-    HOLOGRAM_DIR_PATH = os.path.join(app.static_folder, HOLOGRAM_DIR)
-
-    if result is not None:
-        file_path = os.path.join(SAVED_HOLOGRAMS_DIR, filename)
-        if holo_attr is None:
-            image = Image.open(file_path)
-            image = np.array(image)
-
-            if image.ndim == 3:
-                image = np.squeeze(image, 2)
-
-            hologram_metadata = Hologram(experiment=experiment_name)
-            hologram_metadata.update_data(image)
-            attr_save_plt = image
-            image_name = 'hologram_' + str(random.random()) + '.png'
-        else:
-            holo_mat = loadmat(file_path)
-            hologram_metadata = Hologram(experiment=experiment_name,
-                                         data=holo_mat[holo_attr])
-
-            image_name = 'mat_image_' + str(random.random()) + '.png'
-            attr_save_plt = np.abs(holo_mat[holo_attr])
-
-        path_image = os.path.join(HOLOGRAM_DIR_PATH, image_name)
-        utils.save_image_with_plt(attr_save_plt, path_image)
-        path_image_static = 'results/'+experiment_name+'/hologram/'+image_name
-
-        session['hologram_metadata'] = hologram_metadata
-
-    return jsonify({'result': result, 'image_path': path_image_static})
-
-
 @app.route('/record_hologram', methods=['POST'])
 def record_hologram():
-    data = request.form['image_name']
-    return jsonify({
-        'result': 'sucess',
-        'rec_hologram': capture(data),
-        'images_folder': list_images_folder()
-    })
+    if request.method == 'POST':
+        img_uri_recorded = request.form.get('image_uri')
+        experiment_name = request.form.get('exp_name')
+        holo_attr = request.form.get('holo_attrs')
+        filename = request.form.get('filename')
+        file_path = os.path.join(SAVED_HOLOGRAMS_DIR, filename)
+        image_name = None
 
+        if img_uri_recorded is not None:
+            img_uri_recorded = request.form['image_uri']
+            filename = os.path.split(img_uri_recorded)[0] + '_' + str(
+                random.random()) + '.png'
 
-@app.route("/video_feed")
-def video_feed():
-    thread_camera = threading.Thread(target=thread_acquisition)
-    thread_camera.daemon = True
-    thread_camera.start()
-    
-    return Response(stream_with_context(generate()),
-                    mimetype="multipart/x-mixed-replace; boundary=frame")
+            img_uri = img_uri_recorded.split(',')[1]
+            imgdata = base64.b64decode(img_uri)
+            image = np.asarray(bytearray(imgdata), dtype="uint8")
+            image = cv2.imdecode(image, cv2.IMREAD_GRAYSCALE)
+            image = image.astype(float)
 
+        result = utils.generate_experiment_tree_directory(experiment_name)
 
-def get_hologram():
-    global processing_frame, lock_processing
-    while True:
-        with lock_processing:
-            if processing_frame is None:
-                continue
-            (flag, encodedImage) = cv2.imencode(".jpg", processing_frame)
-            if not flag:
-                continue
+        HOLOGRAM_DIR = 'results/' + experiment_name + '/hologram'
+        HOLOGRAM_DIR_PATH = os.path.join(app.static_folder, HOLOGRAM_DIR)
 
-        yield (b'--frame\r\n'
-               b'Content-Type: image/jpeg\r\n\r\n' + bytearray(encodedImage) +
-               b'\r\n')
+        if result is not None:
+
+            if holo_attr is None:
+                if img_uri_recorded is None:
+                    image = Image.open(file_path)
+                image = np.array(image)
+
+                if image.ndim == 3:
+                    image = np.squeeze(image, 2)
+
+                hologram_metadata = Hologram(experiment=experiment_name)
+                hologram_metadata.update_data(image)
+                attr_save_plt = image
+                image_name = 'hologram_' + str(random.random()) + '.png'
+            else:
+                holo_mat = loadmat(file_path)
+                hologram_metadata = Hologram(experiment=experiment_name,
+                                             data=holo_mat[holo_attr])
+
+                image_name = 'mat_image_' + str(random.random()) + '.png'
+                attr_save_plt = np.abs(holo_mat[holo_attr])
+
+            path_image = os.path.join(HOLOGRAM_DIR_PATH, image_name)
+            utils.save_image_with_plt(attr_save_plt, path_image)
+            path_image_static = url_for('processing_hologram', image='results/'+experiment_name+'/hologram/'+image_name)
+
+            if img_uri_recorded is not None:
+                with open(path_image, 'wb') as f:
+                    f.write(imgdata)
+
+            session['hologram_metadata'] = hologram_metadata
+
+    return jsonify({'result': 'sucess', 'path': path_image_static})
