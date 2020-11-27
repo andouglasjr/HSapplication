@@ -161,7 +161,7 @@
               <img class="img-thumbnail img-show" src="{{url_for('static', filename='')}}{{image}}">
             </div>
             <div class="col-sm">
-              <h5 class="card-title card-header-changed">Reconstruction</h5>
+              <h5 class="card-title card-header-changed">Intensity</h5>
               <img class="img-thumbnail img-show" id="image_view_amp_reconstruct">
 
             </div>
@@ -442,8 +442,6 @@
 
       document.getElementById('width_hologram').value = width_;
       document.getElementById('height_hologram').value = height_;
-
-
     }
 
     document.getElementById('bt_fit').addEventListener(
@@ -501,12 +499,6 @@
     document.getElementById('bt_confirm').addEventListener(
       'click',
       function () {
-        //var filename = 'fft_modified.jpeg'
-        //var dataURL = stage.toDataURL({
-        //  mimeType: 'image/jpg',
-        //  quality: 1.0
-        //});
-        //downloadURI(dataURL, filename);
 
         var rect_pos_x = rect1.attrs.x;
         var rect_pos_y = rect1.attrs.y;
@@ -554,7 +546,6 @@
     });
 
     $('#generate_stl').click(function (event) {
-      console.log('Entrou')
       var dgl = document.getElementById('dgl_form').value;
       var dlc = document.getElementById('dlc_form').value;
       var msg = document.getElementById('msg_saving')
@@ -611,15 +602,9 @@
           var sources = {
             hologram: data.fft,
           };
-          console.log(sources)
-
           $('#modal_spatial_filter').modal('show');
           loadImages(sources, buildStage);
-
-
         });
-
-
       } else {
         req = $.ajax({
           url: '/reconstruct',

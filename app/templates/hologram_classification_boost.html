@@ -80,10 +80,8 @@
 {% endblock %}
 
 {% block buttons_navigation %}
-<a href="{{url_for('test')}}"></a><button type="button"
-  class="btn btn-sm btn-outline-secondary bt-changed">Previous</button></a>
-<a href="#"></a><button onclick="next_page()" type="button"
-  class="btn btn-sm btn-outline-secondary bt-changed">Next</button></a>
+<a href="{{url_for('index')}}"><button type="button"
+  class="btn btn-sm btn-outline-secondary bt-changed">Index</button></a>
 {% endblock %}
 
 {% block content %}
@@ -148,7 +146,7 @@
                       <input type="checkbox" name="saved_image" value="checkbox_img_{{image}}" id="{{image}}"
                         class="checkbox_img_" onclick="selected_image(this)">
 
-                      <img src="static/reconstructed_images/{{image|safe}}" class="img-thumbnail mt-2"
+                      <img src="static/results/{{experiment|safe}}/reconstructed_hologram/{{image}}" class="img-thumbnail mt-2"
                         style="width: 130px; height:110px;">
                     </label>
                   </div>
@@ -310,7 +308,7 @@
       console.log(data_result)
       card_chart.style.visibility = "visible"
       cm_image = document.getElementById('cm_image')
-      cm_image.src = 'static/results/'+data_result.cm_image
+      cm_image.src = data_result.cm_image
       
         if (data_result.values.length == 1){
 

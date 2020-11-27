@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title_content%} Step 3. Parameters and Processing {% endblock %}
+{% block title_content%} Step 3. Processing {% endblock %}
 {% block nav_flex_column  %}
 
 <ul class="nav flex-column">
@@ -80,13 +80,14 @@
 {% endblock %}
 
 {% block buttons_navigation %}
-<a href="{{url_for('hologram_acquisition')}}"><button type="button" class="btn btn-sm btn-outline-secondary bt-changed">Previous</button></a>
+<a href="{{url_for('hologram_acquisition')}}"><button type="button"
+    class="btn btn-sm btn-outline-secondary bt-changed">Previous</button></a>
 <a href="#"><button type="button" class="btn btn-sm btn-outline-secondary bt-changed">Next</button></a>
 {% endblock %}
 
 {% block content %}
 <div class="row">
-  <div class="col-6">
+  <div class="col-7">
     <div class="card p-3 m-2">
       <h5>Image Log</h5>
       <div class="row">
@@ -224,8 +225,8 @@
         draggable: true,
       });
 
-    var width = 300;
-    var height = 300;
+    var width = 640;
+    var height = 480;
 
       var stage = new Konva.Stage({
         container: 'container_hologram',
@@ -323,15 +324,11 @@
     document.getElementById('bt_fit').addEventListener(
       'click',
       function () {
-        
-        
         stage.width(hologram.width());
         stage.height(hologram.height());
 
         background.width(hologram.width());
         background.height(hologram.height());
-
-        
         stage.draw();
       },
       false
@@ -365,7 +362,7 @@
           req.done(function (data) {
               console.log(data)
                   if (data.result == 'sucess'){
-                      window.location.href = "{{ url_for('holo_reconstruction', image='') }}"+data.path;
+                      window.location.href = data.path;
                   } 
               });
       }
@@ -388,28 +385,7 @@
       hologram: 'static/{{ image|safe }}'
     };
 
-    loadImages(sources, buildStage);
-
-
-    $('.save_changes').on('click', function () {
-        var activate = true;
-        req = $.ajax({
-          url : '/save_changes',
-          type: 'POST',
-          data : {activate:activate}
-        });
-
-        req.done(function (data) {
-            if (data.result == 'sucess'){
-                $('#bt_record').text("Acquire Again")
-                document.getElementById("bt_record").style.visibility = "hidden"
-                document.getElementById("bt_confirm").style.visibility = "visible"
-            } 
-        });
-            
-    });
-
-         
+    loadImages(sources, buildStage);        
          
 </script>
 

@@ -1,5 +1,5 @@
 from app import app
-from flask import Response, jsonify, render_template, request
+from flask import Response, jsonify, render_template, request,session, url_for
 
 import os
 from os import listdir
@@ -23,31 +23,40 @@ from PIL import Image
 
 @app.route('/holo_classification')
 def holo_classification():
+    RESULT_DIR = os.path.join(app.static_folder, 'results')        
+    hologram_metadata = session.get('hologram_metadata')
+    EXPERIMENT_NAME = hologram_metadata.experiment
+    EXPERIMENT_DIR = os.path.join(RESULT_DIR, EXPERIMENT_NAME)
+    RECONSTRUCTION_DIR = os.path.join(EXPERIMENT_DIR, 'reconstructed_hologram')
+    ML_MODELS = os.path.join(app.static_folder, 'ml_models')
+    
     dir_path = os.path.dirname(os.path.dirname(__file__))
-    path_directory = dir_path + '/static/ml_models'
     models = [
-        f for f in listdir(path_directory) if isfile(join(path_directory, f))
+        f for f in listdir(ML_MODELS) if isfile(join(ML_MODELS, f))
     ]
-    
-    path_directory = dir_path + '/static/reconstructed_images'
     images = [
-        f for f in listdir(path_directory) if isfile(join(path_directory, f))
+        f for f in listdir(RECONSTRUCTION_DIR) if isfile(join(RECONSTRUCTION_DIR, f))
     ]
     
-    return render_template('hologram_classification_boost.html', models=models, images=images)
+    return render_template('hologram_classification_boost.html', models=models, images=images, experiment=EXPERIMENT_NAME)
 
 
 @app.route('/classify', methods=['POST', 'GET'])
 def classify():
+    RESULT_DIR = os.path.join(app.static_folder, 'results')        
+    hologram_metadata = session.get('hologram_metadata')
+    EXPERIMENT_NAME = hologram_metadata.experiment
+    EXPERIMENT_DIR = os.path.join(RESULT_DIR, EXPERIMENT_NAME)
+    RECONSTRUCTION_DIR = os.path.join(EXPERIMENT_DIR, 'reconstructed_hologram')
+    ML_MODELS = os.path.join(app.static_folder, 'ml_models')
+    CLASSIFICATION_RESULTS = os.path.join(EXPERIMENT_DIR, 'classification_results')
+    
     models_names = request.form.getlist('model_name[]')
     images_names = request.form.getlist('image_name[]')
-    print(models_names)
     cm_name = None
 
-    dir_path = os.path.dirname(os.path.dirname(__file__))
-
-    image_path_directory = dir_path + '/static/reconstructed_images/'
-    model_path_directory = dir_path + '/static/ml_models/'
+    image_path_directory = RECONSTRUCTION_DIR + "/"
+    model_path_directory = ML_MODELS + "/"
     
     mean = [0.485, 0.456, 0.406]
     std = [0.229, 0.224, 0.225]
@@ -92,8 +101,8 @@ def classify():
         disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels = labels_plot)
         disp = disp.plot(cmap='Blues')
         
-        cm_name = 'cm_' + str(random.random()) + '.png'
-        plt.savefig('app/static/results/'+cm_name)    
+        cm_name = '/cm_' + str(random.random()) + '.png'
+        plt.savefig(CLASSIFICATION_RESULTS+cm_name)    
     
     top_predict_values, top_predict_indices = torch.topk(pred, 5)      
      
@@ -104,13 +113,20 @@ def classify():
         
     if len(top_predict_indices_list)>2:
         print('')
-        
-    return jsonify({
-        'sucess': 'sucess',
-        'values': top_predict_values.tolist(),
-        'indices': top_predict_indices.tolist(),
-        'cm_image': cm_name,
-    })
+    
+    if cm_name is None:     
+        return jsonify({
+            'sucess': 'sucess',
+            'values': top_predict_values.tolist(),
+            'indices': top_predict_indices.tolist()
+        })
+    else:
+        return jsonify({
+            'sucess': 'sucess',
+            'values': top_predict_values.tolist(),
+            'indices': top_predict_indices.tolist(),
+            'cm_image': 'static/results/'+EXPERIMENT_NAME+'/classification_results'+cm_name,
+        })
 
 
 def list_models_folder():
