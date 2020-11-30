@@ -67,6 +67,7 @@ def record_hologram():
         experiment_name = request.form.get('exp_name')
         holo_attr = request.form.get('holo_attrs')
         filename = request.form.get('filename')
+        
         file_path = os.path.join(SAVED_HOLOGRAMS_DIR, filename)
         image_name = None
 
@@ -112,9 +113,9 @@ def record_hologram():
             utils.save_image_with_plt(attr_save_plt, path_image)
             
             if holo_attr is None:
-                path_image_static = url_for('processing_hologram', image='results/'+experiment_name+'/hologram/'+image_name)
-            else:
                 path_image_static = url_for('holo_reconstruction', image='results/'+experiment_name+'/hologram/'+image_name)
+            else:
+                path_image_static = url_for('processing_hologram', image='results/'+experiment_name+'/hologram/'+image_name)
 
             if img_uri_recorded is not None:
                 with open(path_image, 'wb') as f:
