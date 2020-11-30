@@ -11,7 +11,7 @@ h5py==3.1.0
 solidpython==0.4.2
 torch==1.7.0
 torchvision==0.8.1
-efficientnet-pytorch==0.7.0
+efficientnet-pytorch==0.6.3
 scikit-learn==0.23.2
 pyOpenSSL==19.1.0
 mpld3
