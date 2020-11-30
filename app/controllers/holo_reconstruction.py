@@ -125,7 +125,7 @@ def apply_mask(fft, mask_pos_x, mask_pos_y, mask_width, mask_height,
     plt.axis('off')
     fig.tight_layout()
     rand_number = random.random()
-    filename = 'fft_changed' + str(rand_number) + '.png'
+    filename = '/fft_changed' + str(rand_number) + '.png'
 
     RESULT_DIR = os.path.join(app.static_folder, 'results')        
     hologram_metadata = session.get('hologram_metadata')
