@@ -41,6 +41,7 @@ def spatial_filter():
         EXPERIMENT_DIR = os.path.join(RESULT_DIR, EXPERIMENT_NAME)
         RECONSTRUCTION_DIR = os.path.join(EXPERIMENT_DIR,
                                           'reconstructed_hologram')
+        GENERAL_RESULTS_DIR = os.path.join(RECONSTRUCTION_DIR, 'general_results')
 
         holo_ = data_grid(
             hologram_metadata.dataArray.data,
@@ -64,12 +65,12 @@ def spatial_filter():
         fig.tight_layout()
         rand_number = random.random()
         filename = '/fft' + str(rand_number) + '.png'
-        plt.savefig(RECONSTRUCTION_DIR + filename,
+        plt.savefig(GENERAL_RESULTS_DIR + filename,
                     bbox_inches='tight',
                     transparent=True,
                     pad_inches=0,
                     dpi=dpi)
-        filename = 'static/results/'+EXPERIMENT_NAME+'/reconstructed_hologram'+filename
+        filename = 'static/results/'+EXPERIMENT_NAME+'/reconstructed_hologram/general_results'+filename
         return json.dumps({'fft': filename})
 
 
@@ -90,6 +91,7 @@ def reconstruct_from_fft():
     EXPERIMENT_NAME = hologram_metadata.experiment
     EXPERIMENT_DIR = os.path.join(RESULT_DIR, EXPERIMENT_NAME)
     RECONSTRUCTION_DIR = os.path.join(EXPERIMENT_DIR, 'reconstructed_hologram')
+    GENERAL_RESULTS_DIR = os.path.join(RECONSTRUCTION_DIR, 'general_results')
 
     amp_img, phase_img = utils.save_images(r, fft, RECONSTRUCTION_DIR)
     amp_img = 'static/results/'+EXPERIMENT_NAME+'/reconstructed_hologram/'+amp_img
@@ -130,8 +132,9 @@ def apply_mask(fft, mask_pos_x, mask_pos_y, mask_width, mask_height,
     EXPERIMENT_NAME = hologram_metadata.experiment
     EXPERIMENT_DIR = os.path.join(RESULT_DIR, EXPERIMENT_NAME)
     RECONSTRUCTION_DIR = os.path.join(EXPERIMENT_DIR, 'reconstructed_hologram')
+    GENERAL_RESULTS_DIR = os.path.join(RECONSTRUCTION_DIR, 'general_results')
 
-    plt.savefig(RECONSTRUCTION_DIR + filename,
+    plt.savefig(GENERAL_RESULTS_DIR + filename,
                 bbox_inches='tight',
                 transparent=False,
                 pad_inches=0)
@@ -196,6 +199,7 @@ def reconstruct():
         EXPERIMENT_DIR = os.path.join(RESULT_DIR, EXPERIMENT_NAME)
         RECONSTRUCTION_DIR = os.path.join(EXPERIMENT_DIR,
                                           'reconstructed_hologram')
+        GENERAL_RESULTS_DIR = os.path.join(RECONSTRUCTION_DIR, 'general_results')
 
         amp_img, phase_img = utils.save_images(r, fft, RECONSTRUCTION_DIR)
         

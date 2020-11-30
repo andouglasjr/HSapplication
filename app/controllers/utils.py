@@ -19,7 +19,7 @@ def generate_experiment_tree_directory(experiment_name):
         #Create hologram, processed_hologram, reconstructed_hologram, stl_files, segmented_images, classification_results Folders
         folder_names = [
             'hologram', 'processed_hologram', 'reconstructed_hologram',
-            'stl_files', 'segmented_images', 'classification_results'
+            'stl_files', 'segmented_images', 'classification_results', 'reconstructed_hologram/general_results'
         ]
         for name in folder_names:
             os.mkdir(os.path.join(EXPERIMENT_NAME_DIRECTORY, name))
@@ -59,7 +59,7 @@ def save_images(r, fft, path_directory):
     plt.axis('off')
     fig.tight_layout()
     rand_number = random.random()
-    plt.savefig(path_directory + '/fft' + str(rand_number) + '.png',
+    plt.savefig(path_directory + '/general_results/fft' + str(rand_number) + '.png',
                 bbox_inches='tight',
                 transparent=False,
                 pad_inches=0)

@@ -299,7 +299,7 @@
       req = $.ajax({
         url: '/record_hologram',
         type: 'POST',
-        data: { 'exp_name': experiment_name, 'filename': filename },
+        data: { 'exp_name': experiment_name, 'filename': filename, 'skip': 1 },
       });
 
       req.done(function (data) {
