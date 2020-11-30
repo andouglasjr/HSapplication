@@ -1,7 +1,7 @@
 ---
 sort: 1
 ---
-# Holographic System for Machine Learning Approaches (HolSys-ML)
+# Holographic System for Machine Learning Approaches (HolSys-ML): Beta Version
 
 The HolSys-ML is a complete holographic system developed by [Natalnet Laboratory Network](http://www.natalnet.br) (Brazil) and [Institute of Applied Sciences and Intelligent Systems - ISASI](https://www.isasi.cnr.it/) (Italy) to identify and classify microparticles in water samples. The system was designed to be used by scientists and researches in order to make easier the studies of particles using holography techniques and deep learning trained models. In this page is detailed all the steps to build a HolSys and it is available the Web Application developed to work with the system to perform all need steps to reconstruct the hologram and classify it using ML. 
 
@@ -28,34 +28,3 @@ Please, visit the [Credits and Citation]() page to see how to credit this system
 ## License
 
 The theme is available as open source under the terms of the MIT License.
-
-
-## site.pages
-
-<!-- prettier-ignore-start -->
-
-| source          | link                                                           |
-| --------------- | -------------------------------------------------------------- |
-{% for page in site.pages -%}
-| {{ page.path }} | [{{ page.url | relative_url }}]({{ page.url | relative_url }}) |
-{% endfor %}
-
-<!-- prettier-ignore-end -->
-
-## Documents
-
-https://jekyll-rtd-theme.rundocs.io
-
-## Local debug
-
-```sh
-gem install jekyll bundler
-
-bundle install
-
-JEKYLL_GITHUB_TOKEN=blank PAGES_API_URL=http://0.0.0.0 bundle exec jekyll server --livereload
-```
-
-## The license
-
-The theme is available as open source under the terms of the MIT License

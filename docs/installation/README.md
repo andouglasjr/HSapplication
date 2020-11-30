@@ -10,6 +10,22 @@ First, we really recommend to create a environment to protect other projects and
 
     python3 -m pip install --user virtualenv
 
+Once the virtualenv is installed, create a virtual environment
+
+    python3 -m venv /path/to/new/virtual/environment
+
+Finally, go to the correct folder and activate the environment
+
+    cd /path/to/new/virtual/environment
+    . bin/activate
+
+## Git Clone
+
+Clone this repository
+
+    git clone https://github.com/andouglasjr/HSapplication/tree/master
+    
+
 ## Requirements
 In the requirements.txt files you will find all the libraries with their respects versions to make the application work properly. Run the follow command
 
