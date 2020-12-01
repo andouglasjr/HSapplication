@@ -1,6 +1,13 @@
 title: HolSys - ML (Beta Version)
 lang: en
-description: Write an awesome description for your new site here
+description: The HolSys-ML is a complete holographic system developed by Natalnet Laboratory Network (Brazil) and 
+Institute of Applied Sciences and Intelligent Systems - ISASI (Italy) 
+to identify and classify microparticles in water samples. 
+The system was designed to be used by scientists and researches in order to make easier the 
+studies of particles using holography techniques and deep learning trained models. 
+In this page is detailed all the steps to build a HolSys and it is available the 
+Web Application developed to work with the system to perform all need steps to 
+reconstruct the hologram and classify it using ML. 
 
 readme_index:
   with_frontmatter: true
