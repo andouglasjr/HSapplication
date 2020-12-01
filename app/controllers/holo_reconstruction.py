@@ -16,7 +16,7 @@ import base64
 import cv2
 from solid import *
 import app.controllers.utils as utils
-
+plt.ioff()
 #Directories
 
 
@@ -102,8 +102,8 @@ def reconstruct_from_fft():
 def apply_mask(fft, mask_pos_x, mask_pos_y, mask_width, mask_height,
                image_scaleX=None, image_scaleY=None):
     out = fft.copy()
-    mask = np.zeros((round(out.data.shape[2]),
-                     round(out.data.shape[1])))
+    mask = np.zeros((round(out.data.shape[1]),
+                     round(out.data.shape[2])))
 
     mask_pos_x = mask_pos_x
     mask_pos_y = mask_pos_y
@@ -113,7 +113,7 @@ def apply_mask(fft, mask_pos_x, mask_pos_y, mask_width, mask_height,
     mask[round(mask_pos_y):round(mask_pos_y + mask_height),
          round(mask_pos_x):round(mask_pos_x + mask_width)] = 1 + 0j
 
-    mask = cv2.resize(mask, dsize=(out.data[0].shape[1], out.data[0].shape[0]))
+    #mask = cv2.resize(mask, dsize=(out.data[0].shape[1], out.data[0].shape[0]))
     fft_ = out.data[0] * mask
     fft_ = np.expand_dims(fft_, 0)
     out.data = fft_

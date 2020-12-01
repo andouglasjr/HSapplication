@@ -1,9 +1,10 @@
 import os
-from app import app
 import matplotlib.pyplot as plt
 import random
 import numpy as np
 import cv2
+from app import app
+plt.switch_backend('Agg')
 
 #Directories
 STATIC_DIRECTORY = app.static_folder
@@ -28,6 +29,7 @@ def generate_experiment_tree_directory(experiment_name):
 
 
 def save_image_with_plt(imshow_arg, path):
+    plt.ioff()
     fig = plt.figure()
     plt.imshow(imshow_arg, cmap='gray')
     plt.axis('off')
@@ -47,7 +49,10 @@ def autofocusing(r):
         std = np.std(value)
         tamura = std / media
         tc.append(tamura)
-
+    rho = (tc[1] - tc[0])/np.abs(tc[1] - tc[0])
+    rho = np.array(rho)
+    tc = np.array(tc)
+    tc = tc*rho
     best_focus = np.where(tc == np.max(np.max(tc)))
     best_focus = np.squeeze(best_focus)
     return best_focus

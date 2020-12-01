@@ -228,7 +228,7 @@
             </form>
           </div>
 
-          <div id="container_hologram" class="mx-auto mt-2">
+          <div id="container_hologram" class="">
           </div>
 
         </div>
@@ -334,18 +334,16 @@
   }
 
   function buildStage(images) {
-    console.log(images);
-
-    var width = images.width;
-    var height = images.height;
+    var width = images.hologram.width;
+    var height = images.hologram.height;
 
     var stage = new Konva.Stage({
       container: 'container_hologram',
       width: width,
-      height: height,
+      height: height
     });
 
-    stage.container().style.backgroundColor = 'black';
+    //stage.container().style.backgroundColor = 'black';
 
     var background = new Konva.Rect({
       x: 0,
@@ -356,8 +354,10 @@
       listening: false,
     });
 
+    console.log(stage.width())
+
     var layer = new Konva.Layer();
-    layer.add(background);
+    //layer.add(background);
 
     var hologram = new Konva.Image({
       image: images.hologram,
@@ -368,41 +368,40 @@
     image_width = hologram.attrs.image.width
     image_height = hologram.attrs.image.height
 
-    rate_width = width / image_width;
-    rate_height = width / image_height;
+    console.log(image_width)
 
-    console.log(image_width, image_height)
-    console.log(rate_width, rate_height)
+    rate_width = width / image_width;
+    rate_height = height / image_height;
 
     var scale_x = 0
     var scale_y = 0
 
-    if (rate_width < 1) {
-      scale_x = rate_width
-    } else {
-      stage.width(hologram.width());
-    }
+    //if (rate_width < 1) {
+    //  scale_x = rate_width
+    //} else {
+    //  stage.width(hologram.width());
+    //}
 
-    if (rate_height < 1) {
-      scale_y = rate_height
-    } else {
-      stage.height(hologram.height());
-    }
+    //if (rate_height < 1) {
+    //  scale_y = rate_height
+    //} else {
+    //  stage.height(hologram.height());
+    //}
+
+    stage.width(hologram.width());
+    stage.height(hologram.height());
 
     hologram.setAttrs({
       x: 0,
       y: 0,
-      borderSize: 1,
     });
-
-    hologram.zIndex(0);
 
     hologram.cache();
     layer.add(hologram);
 
     var rect1 = new Konva.Rect({
-      x: 20,
-      y: 20,
+      x: 0,
+      y: 0,
       width: 200,
       height: 200,
       stroke: 'black',
@@ -411,6 +410,10 @@
     });
 
     rect1.on('dragmove', function () {
+      console.log(rect1.attrs.x, rect1.attrs.y)
+      var rect_width = rect1.attrs.width * rect1.attrs.scaleX;
+      var rect_height = rect1.attrs.height * rect1.attrs.scaleY;
+      console.log(hologram.attrs.x, hologram.attrs.y, hologram.attrs.width, hologram.attrs.height )
 
     });
 
@@ -439,6 +442,7 @@
     function updateParamenters() {
       var width_ = hologram.width();
       var height_ = hologram.height();
+
 
       document.getElementById('width_hologram').value = width_;
       document.getElementById('height_hologram').value = height_;
@@ -502,8 +506,8 @@
 
         var rect_pos_x = rect1.attrs.x;
         var rect_pos_y = rect1.attrs.y;
-        var rect_width = rect1.attrs.width * rect1.attrs.scaleX;
-        var rect_height = rect1.attrs.height * rect1.attrs.scaleY;
+        var rect_width = rect1.attrs.width;
+        var rect_height = rect1.attrs.height;
         var image_scaleX = hologram.attrs.scaleX;
         var image_scaleY = hologram.attrs.scaleY;
 

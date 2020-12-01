@@ -20,6 +20,7 @@ from PIL import Image
 import app.controllers.utils as utils
 thread_camera = None
 
+
 # Directories
 SAVED_HOLOGRAMS_DIR = os.path.join(app.static_folder, 'saved_holograms')
 
