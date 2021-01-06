@@ -95,9 +95,10 @@ def record_hologram():
                 if img_uri_recorded is None:
                     image = Image.open(file_path)
                 image = np.array(image)
-
+                
                 if image.ndim == 3:
-                    image = np.squeeze(image, 2)
+                    #image = np.squeeze(image, 2)
+                    image = image[:,:,0]
 
                 hologram_metadata = Hologram(experiment=experiment_name)
                 hologram_metadata.update_data(image)

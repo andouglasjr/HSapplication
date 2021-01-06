@@ -55,6 +55,7 @@ def autofocusing(r):
     tc = tc*rho
     best_focus = np.where(tc == np.max(np.max(tc)))
     best_focus = np.squeeze(best_focus)
+    print(best_focus)
     return best_focus
 
 

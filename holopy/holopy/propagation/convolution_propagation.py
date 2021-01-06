@@ -117,11 +117,13 @@ def propagate(data,
     # during fft/ifft
     res.name = 'propagation'
     res = res.to_dataset().update({'x': data.x, 'y': data.y})[res.name]
-
+    
     if contains_zero:
-        d = d_old
-        res = xr.concat([data, res], dim='z')
-
+       d = d_old
+       res = xr.concat([data, res], dim='z')
+    else:
+       res = res.transpose('z','x','y')
+       
     return copy_metadata(data, res), ft
 
 def apply_fft(data,

@@ -180,6 +180,7 @@ def reconstruct():
         step = float(request.form.get('step'))
 
         z = np.arange(zstart, zend, step)
+        print(z)
 
         attrlist = {'pitch': pitch, 'lenght': lenght}
         hologram_metadata = session.get('hologram_metadata')
