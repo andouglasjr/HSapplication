@@ -1,0 +1,205 @@
+{% extends "base.html" %}
+{% block title_content%} Structural Dimensions {% endblock %}
+{% block nav_flex_column  %}
+
+<ul class="nav flex-column">
+  <li class="nav-item">
+    <a class="nav-link active" href="#">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        class="feather feather-plus-circle">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="16"></line>
+        <line x1="8" y1="12" x2="16" y2="12"></line>
+      </svg>
+      Structural Dimensions <span class="sr-only">(current)</span>
+    </a>
+  </li>
+</ul>
+
+{% endblock %}
+
+{% block buttons_navigation %}
+<!--button type="button" class="btn btn-sm btn-outline-secondary">Previous</button-->
+<a href="{{url_for('index')}}"><button type="button" class="btn btn-sm btn-outline-secondary bt-changed">Welcome
+    Page</button></a>
+{% endblock %}
+
+{% block content %}
+<p> This page will help you to make the setup, indicating the main minimum distances that must be used in order to make
+  the system work properly.
+  The first point is to choose the optical components: laser, chip, grating, lens and camera. Each of these components has
+  the main properties that must be taken into account. The pitch is one information that depends on the camera;
+  the lambda is the wavelength that is related to the source; Pixels to sampling is the number of pixels that should be used in the sampling process; Pg is the grating period; wg is the grating size; and f is the focus of the lens.
+  The chip dimensions also must be informed as image below. The results are the beta angle that is the 1th order diffracted beam angle from the grating and
+  Mobj that is the magnification of the object after the lens plane. Finally, the minimum distances dgl (grating-lens),
+  dlc (lens-camera) and the total dt (dgl + dlc).</p>
+
+<div class="card" style="width: 100%;">
+  <div class="card-body">
+    <h5 class="card-title">Specifications</h5>
+    <form class="needs-validation" novalidate>
+      <div class="form-row">
+        <div class="col-md-2 mb-3">
+          <label for="validationCustom01">Wavelength (m)</label>
+          <input type="number" class="form-control" id="wavelength_form" placeholder="Wavelength" value="532e-09" onchange="compute()"
+            required>
+        </div>
+        <div class="col-md-2 mb-3">
+          <label for="validationCustom02">Pitch (m)</label>
+          <input type="number" class="form-control" id="pitch_form" placeholder="Pitch" value="3.45e-06" onchange="compute()"
+            required>
+        </div>
+        <div class="col-md-2 mb-3">
+          <label for="validationCustom02">Pixels to sampling</label>
+          <input type="number" class="form-control" id="pixel_form" placeholder="Pixels to sampling" value="4" onchange="compute()" required>
+        </div>
+        <div class="col-md-2 mb-3">
+          <label for="validationCustom02">Pg (grating period) (m)</label>
+          <input type="number" class="form-control" id="pg_form" placeholder="grating period" value="3e-06" onchange="compute()"
+            required>
+        </div>
+        <div class="col-md-2 mb-3">
+          <label for="validationCustom02">Wg (grating size) (m)</label>
+          <input type="number" class="form-control" id="wg_form" placeholder="grating size" value="1.6e-03" onchange="compute()"
+            required>
+        </div>
+        <div class="col-md-2 mb-3">
+          <label for="validationCustom02">Focus (f) (m)</label>
+          <input type="number" class="form-control" id="focus_form" placeholder="focus" value="6.24e-03" onchange="compute()"
+            required>
+        </div>
+
+      </div>
+    </form>
+  </div>
+</div>
+<div class="card mt-1" style="width: 100%;">
+  <div class="card-body">
+    <h5 class="card-title">Chipp Dimensions</h5>
+    <form class="needs-validation" novalidate>
+      <div class="form-row">
+        <div class="col-md-2 mb-3">
+          <label for="validationCustom01">h_chip (m)</label>
+          <input type="number" class="form-control" id="h_chip_form" placeholder="h_chip" value="1.8e-03" onchange="compute()"
+            required>
+        </div>
+        <div class="col-md-2 mb-3">
+          <label for="validationCustom02">coverlid (m)</label>
+          <input type="number" class="form-control" id="coverlid_form" placeholder="coverlid" value="1.8e-04" onchange="compute()"
+            required>
+        </div>
+        <div class="col-md-2 mb-3">
+          <label for="validationCustom02">h_channel (m)</label>
+          <input type="number" class="form-control" id="h_channel_form" placeholder="h_channel" value="2e-04" onchange="compute()"
+            required>
+        </div>
+        <div class="col-md-6 mb-3 text-right">
+          <img src="{{ url_for('static', filename='logos/chip_structure_site.png') }}" class="" width="500px">
+        </div>
+
+      </div>
+    </form>
+  </div>
+</div>
+<div class="card mt-1" style="width: 100%;">
+  <div class="card-body">
+    <form class="needs-validation" novalidate>
+      <div class="form-row">
+        <div class="col-md-2 mb-3">
+          <label for="validationCustom01">Beta (°)</label>
+          <input disabled type="number" class="form-control" id="beta_form" value="0.0" required>
+        </div>
+        <div class="col-md-2 mb-3">
+          <label for="validationCustom02">Mobj </label>
+          <input disabled type="number" class="form-control" id="mobj_form" value="0.0" required>
+        </div>
+        <div class="col-md-8 mb-3">
+          <div class="form-row">
+            <div class="col mb-3">
+              <label for="validationCustom01">dgl (m)</label>
+              <input disabled type="number" class="form-control" id="dgl_form" value="0.0"
+                required>
+            </div>
+            <div class="col mb-3">
+              <label for="validationCustom02">dlc (m)</label>
+              <input disabled type="number" class="form-control" id="dlc_form" value="0.0"
+                required>
+            </div>
+            <div class="col mb-3">
+              <label for="validationCustom02">dt (m)</label>
+              <input disabled type="number" class="form-control" id="dt_form" value="0.0"
+                required>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+  </div>
+  </form>
+</div>
+</div>
+
+
+{% endblock %}
+
+
+
+{% block new_scripts%}
+<script type=text/javascript>
+
+compute()
+
+function compute() {
+  var wavelength = parseFloat(document.getElementById("wavelength_form").value);
+  var pitch = parseFloat(document.getElementById("pitch_form").value);
+  var pixel = parseFloat(document.getElementById("pixel_form").value);
+  var pg = parseFloat(document.getElementById("pg_form").value);
+  var wg = parseFloat(document.getElementById("wg_form").value);
+  var focus = parseFloat(document.getElementById("focus_form").value);
+  var h_chip = parseFloat(document.getElementById("h_chip_form").value);
+  var h_channel = parseFloat(document.getElementById("h_channel_form").value);
+  var coverlid = parseFloat(document.getElementById("coverlid_form").value);
+  var beta_form = document.getElementById("beta_form");
+  var mobj_form = document.getElementById("mobj_form");
+  var dgl_form = document.getElementById("dgl_form");
+  var dlc_form = document.getElementById("dlc_form");
+  var dt_form = document.getElementById("dt_form");
+
+  beta = convert_to_graus(Math.asin(wavelength/pg));
+  beta_form.value = round_decimal(beta,1);
+
+  dgl = wg/Math.tan(convert_to_rad(beta))
+  dgl_form.value = round_decimal(dgl,4)
+
+  mobj = -focus/(focus-(dgl-(h_chip-coverlid-h_channel/2)))
+  mobj_form.value = round_decimal(mobj,1)
+
+  mf = pixel*pitch*Math.sin(convert_to_rad(beta))/wavelength
+  console.log(mf)
+  dlc = focus*(mf+1)
+  dlc_form.value = round_decimal(dlc,4)
+
+  dt = dgl + dlc
+  dt_form.value = round_decimal(dt,4)
+  
+}
+
+function convert_to_graus(x) {
+  return x*360/(2*Math.PI)
+}
+
+function convert_to_rad(x) {
+  return x*2*Math.PI/360
+  
+}
+
+function round_decimal(x, decimal_places){
+  const factorOfTen = Math.pow(10, decimal_places)
+  return Math.round(x*factorOfTen)/factorOfTen
+}
+
+</script>
+
+{% endblock %}

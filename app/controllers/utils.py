@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import random
 import numpy as np
 import cv2
+import math
 from app import app
 plt.switch_backend('Agg')
 
@@ -55,7 +56,6 @@ def autofocusing(r):
     tc = tc*rho
     best_focus = np.where(tc == np.max(np.max(tc)))
     best_focus = np.squeeze(best_focus)
-    print(best_focus)
     return best_focus
 
 
@@ -84,6 +84,10 @@ def save_images(r, fft, path_directory):
                 pad_inches=0)
     amp_img = 'reconstructed_amplitude' + str(rand_number) + '.png'
 
+    ang = np.angle(r[best_focus].data[:, :]) < -math.pi
+    ang = ang > math.pi
+    print(ang.any())
+    
     fig = plt.figure()
     plt.imshow(np.angle(r[best_focus].data[:, :]), cmap='gray')
     plt.axis('off')

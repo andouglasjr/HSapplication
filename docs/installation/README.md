@@ -21,7 +21,7 @@ Clone this repository
 Finally, go to the correct folder and activate the environment
 
     cd /path/to/new/virtual/environment
-    . bin/activate
+    source bin/activate
 
     
 
@@ -43,6 +43,12 @@ If you will not use the classification step, comment the torch library line in t
 The reconstruction step is performed using the [Holopy Library]() with some changes to work on in a web environment. To install this library, enter in **holopy** folder and run the follow command
 
     python setup.py develop
+
+### To MAC users
+
+If some error occurred in the command above, likely is missing **gfortran** compiler. We recommend to use **brew** package manager as follow
+
+    brew install gfortran
 
 ## Running Flask Server
 Once the requirements have been installed, go to the root directory and run

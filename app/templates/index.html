@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title_content%} Step 1. Welcome {% endblock %}
+{% block title_content%} Welcome {% endblock %}
 {% block nav_flex_column  %}
 
 <ul class="nav flex-column">
@@ -107,7 +107,35 @@
     samples for their application. More than one model can be used in a ensemble model approach.
   </li>
 </ul>
-<p> The web application codes are available on <a href="https://github.com/andouglasjr/HSapplication">github</a>. To use this code locally access the <a href="https://andouglasjr.github.io/HSapplication/installation/">Get Started</a> section and to know more
-  about the application access <a href="https://andouglasjr.github.io/HSapplication/">HSWebApp Doc.</a> </p>
-<p>To start to use the web application click on the "Next" button on the top-right. </p>
+<p> Choose one of the cards below to start with.</p>
+
+<div class="row d-flex justify-content-center" style="width:100%">
+  <div class="card mr-2" style="width: 18rem;">
+    <div class="card-body">
+      <h5 class="card-title">Structural Dimensions</h5>
+      <p class="card-text">Compute the structural dimensions of the system based on some parameters of the optical components.</p>
+      <a href="{{url_for('structural_dimensions')}}" class="card-link">Start here</a>
+    </div>
+  </div>
+  
+  <div class="card mr-2" style="width: 18rem;">
+    <div class="card-body">
+      <h5 class="card-title">HS Application</h5>
+      <p class="card-text">Acquire, Process, Reconstruct and Classify using any holographic device and your trained models.</p>
+      <a href="{{url_for('hologram_acquisition')}}" class="card-link">Start here</a>
+    </div>
+  </div>
+
+  <div class="card" style="width: 18rem;">
+    <div class="card-body">
+      <h5 class="card-title">GitHub</h5>
+      <p class="card-text">Access the files to run this web application locally and the documentations of the HolSys.</p>
+      <a href="https://github.com/andouglasjr/HSapplication" class="card-link">Code</a>
+      <a href="https://andouglasjr.github.io/HSapplication/" class="card-link">Docs</a>
+    </div>
+  </div>
+</div>
+
+
+
 {% endblock %}

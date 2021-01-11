@@ -7,7 +7,7 @@ The HolSys-ML is a complete holographic system developed by [Natalnet Laboratory
 
 ## HolSys Hardware
 
-The holographic system is composed by optical and structural components that have been designed to make the setup easier for different sort of applications. All the documentation to clone the HolSys is detailed [here]().
+The holographic system is composed by optical and structural components that have been designed to make the setup easier for different sort of applications. All the documentation to clone the HolSys is detailed [here](https://andouglasjr.github.io/HSapplication/holsys_hardware/knowing_system.html).
 
 ## HSWebApp
 
@@ -19,12 +19,14 @@ The HSWebApp was developed to be used with the HolSys but can be used for any ho
 4. **Segmentation:** Depending on how the samples is disposed in the image, it is necessary to perform the separation to be inserting on the machine learning model. This is performed using Otsu algorithm and image fill.
 5. **Machine Learning**: In this last step, the user can upload some ML models and use it to classify the test samples for their application. More than one model can be used in a ensemble model approach.
 
-The web application codes are available on [github](). To use this code access the [Get Started]() section and to know more about the application access [HSWebApp Doc]().
+Another function of the HSWebApp is to compute the minimum **structural dimensions** based on the components specification. More about this [click here]().  
+
+The web application codes are available on [github](https://github.com/andouglasjr/HSapplication). To use this code access the [Get Started](https://andouglasjr.github.io/HSapplication/) section.
 
 ## Credits and Citation
 
-Please, visit the [Credits and Citation]() page to see how to credit this system and how to help to improve it.
+Please, visit the [Credits and Citation](https://andouglasjr.github.io/HSapplication/credits/) page to see how to credit this system and how to help to improve it.
 
 ## License
 
-The theme is available as open source under the terms of the MIT License.
+This system is available as open source under the terms of the MIT License.

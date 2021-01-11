@@ -315,6 +315,16 @@
   integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
 <script type="text/javascript" charset="utf-8">
 
+  filename = ""
+  function next_page() {
+    if(filename == ""){
+      console.log('No image!')
+    }else{
+      window.location.href = "{{url_for('holo_segmentation', image='')}}" + filename;
+    }
+    
+  }
+
   function loadImages(sources, callback) {
     var images = {};
     var loadedImages = 0;
@@ -537,6 +547,7 @@
           $('#modal').modal('hide')
           $('#image_view_phase_reconstruct').attr('src', data.phase_img)
           $('#image_view_amp_reconstruct').attr('src', data.amp_img)
+          filename = data.amp_img
 
         });
       },
@@ -633,6 +644,7 @@
           var i;
           $('#image_view_phase_reconstruct').attr('src', data.phase_img)
           $('#image_view_amp_reconstruct').attr('src', data.amp_img)
+          filename = data.amp_img;
 
         });
 

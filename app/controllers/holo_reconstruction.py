@@ -33,6 +33,7 @@ def spatial_filter():
         z = np.arange(zstart, zend, step)
 
         attrlist = {'pitch': pitch, 'lenght': lenght}
+        
         hologram_metadata = session.get('hologram_metadata')
         hologram_metadata.update_attrs(attrlist)
         session['hologram_metadata'] = hologram_metadata
@@ -180,8 +181,7 @@ def reconstruct():
         step = float(request.form.get('step'))
 
         z = np.arange(zstart, zend, step)
-        print(z)
-
+        
         attrlist = {'pitch': pitch, 'lenght': lenght}
         hologram_metadata = session.get('hologram_metadata')
         hologram_metadata.update_attrs(attrlist)
@@ -190,8 +190,10 @@ def reconstruct():
         holo_ = data_grid(
             hologram_metadata.dataArray.data,
             spacing=hologram_metadata.dataArray.attrs['pitch'],
-            medium_index=1,
+            medium_index=1.333,
             illum_wavelen=hologram_metadata.dataArray.attrs['lenght'])
+        
+        #med_wavelen = holo_.illum_wavelen / holo_.medium_index
         r, fft = hp.propagate(holo_, z)
 
         hologram_metadata = session.get('hologram_metadata')

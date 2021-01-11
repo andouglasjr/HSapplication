@@ -80,7 +80,7 @@
 {% endblock %}
 
 {% block buttons_navigation %}
-<a href="#"><button type="button" class="btn btn-sm btn-outline-secondary bt-changed">Previous</button></a>
+<a href="{{url_for('index')}}"><button type="button" class="btn btn-sm btn-outline-secondary bt-changed">Previous</button></a>
 <a href="#"><button onclick="skip_next_page()" type="button" class="btn btn-sm btn-outline-secondary bt-changed">Skip
     Processing</button></a>
 <a href="#"><button onclick="next_page()" type="button"
